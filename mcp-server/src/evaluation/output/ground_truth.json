@@ -1,0 +1,438 @@
+[
+  {
+    "task_id": 1,
+    "type": "simple",
+    "question": "What is the patient's gender and anchor age?",
+    "subject_id": 10000032,
+    "expected_answer": {
+      "patient": {
+        "gender": "F",
+        "anchor_age": 52,
+        "subject_id": 10000032
+      }
+    }
+  },
+  {
+    "task_id": 2,
+    "type": "simple",
+    "question": "List all admissions for this patient (hadm_id, admittime, dischtime) ordered by admittime.",
+    "subject_id": 10000048,
+    "expected_answer": []
+  },
+  {
+    "task_id": 3,
+    "type": "simple",
+    "question": "How many admissions does this patient have?",
+    "subject_id": 10000068,
+    "expected_answer": {
+      "admissions_count": 0
+    }
+  },
+  {
+    "task_id": 4,
+    "type": "simple",
+    "question": "What is the latest Lactate (itemid=50813) value for this patient?",
+    "subject_id": 10000032,
+    "expected_answer": {
+      "latest_lab": {
+        "label": "Lactate",
+        "itemid": 50813,
+        "hadm_id": null,
+        "valuenum": 2.1,
+        "valueuom": "mmol/L",
+        "charttime": "2180-08-05T21:27:00",
+        "subject_id": 10000032
+      }
+    }
+  },
+  {
+    "task_id": 5,
+    "type": "simple",
+    "question": "What is the latest Creatinine (itemid=50912) value for this patient?",
+    "subject_id": 10000048,
+    "expected_answer": {
+      "latest_lab": null
+    }
+  },
+  {
+    "task_id": 6,
+    "type": "simple",
+    "question": "Return the full lab history for Lactate (itemid=50813) for this patient (limit 200).",
+    "subject_id": 10000068,
+    "expected_answer": []
+  },
+  {
+    "task_id": 7,
+    "type": "simple",
+    "question": "List all diagnoses (icd_code + title) for this patient.",
+    "subject_id": 10000032,
+    "expected_answer": [
+      {
+        "hadm_id": 22595853,
+        "icd_code": "5723",
+        "long_title": "Portal hypertension",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "78959",
+        "long_title": "Other ascites",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "5715",
+        "long_title": "Cirrhosis of liver without mention of alcohol",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "07070",
+        "long_title": "Unspecified viral hepatitis C without hepatic coma",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "496",
+        "long_title": "Chronic airway obstruction, not elsewhere classified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "29680",
+        "long_title": "Bipolar disorder, unspecified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "30981",
+        "long_title": "Posttraumatic stress disorder",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22595853,
+        "icd_code": "V1582",
+        "long_title": "Personal history of tobacco use",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "07071",
+        "long_title": "Unspecified viral hepatitis C with hepatic coma",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "78959",
+        "long_title": "Other ascites",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "2875",
+        "long_title": "Thrombocytopenia, unspecified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "2761",
+        "long_title": "Hyposmolality and/or hyponatremia",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "496",
+        "long_title": "Chronic airway obstruction, not elsewhere classified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "5715",
+        "long_title": "Cirrhosis of liver without mention of alcohol",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "V08",
+        "long_title": "Asymptomatic human immunodeficiency virus [HIV] infection status",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 22841357,
+        "icd_code": "3051",
+        "long_title": "Tobacco use disorder",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "07054",
+        "long_title": "Chronic hepatitis C without mention of hepatic coma",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "78959",
+        "long_title": "Other ascites",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "V462",
+        "long_title": "Other dependence on machines, supplemental oxygen",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "5715",
+        "long_title": "Cirrhosis of liver without mention of alcohol",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "2767",
+        "long_title": "Hyperpotassemia",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "2761",
+        "long_title": "Hyposmolality and/or hyponatremia",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "496",
+        "long_title": "Chronic airway obstruction, not elsewhere classified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "V08",
+        "long_title": "Asymptomatic human immunodeficiency virus [HIV] infection status",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "3051",
+        "long_title": "Tobacco use disorder",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 25742920,
+        "icd_code": "78791",
+        "long_title": "Diarrhea",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "45829",
+        "long_title": "Other iatrogenic hypotension",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "07044",
+        "long_title": "Chronic hepatitis C with hepatic coma",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "7994",
+        "long_title": "Cachexia",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "2761",
+        "long_title": "Hyposmolality and/or hyponatremia",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "78959",
+        "long_title": "Other ascites",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "2767",
+        "long_title": "Hyperpotassemia",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "3051",
+        "long_title": "Tobacco use disorder",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "V08",
+        "long_title": "Asymptomatic human immunodeficiency virus [HIV] infection status",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "V4986",
+        "long_title": "Do not resuscitate status",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "V462",
+        "long_title": "Other dependence on machines, supplemental oxygen",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "496",
+        "long_title": "Chronic airway obstruction, not elsewhere classified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "29680",
+        "long_title": "Bipolar disorder, unspecified",
+        "icd_version": 9
+      },
+      {
+        "hadm_id": 29079034,
+        "icd_code": "5715",
+        "long_title": "Cirrhosis of liver without mention of alcohol",
+        "icd_version": 9
+      }
+    ]
+  },
+  {
+    "task_id": 8,
+    "type": "simple",
+    "question": "List this patient's medication history (drug, starttime, stoptime, route) ordered by starttime (limit 200).",
+    "subject_id": 10000048,
+    "expected_answer": []
+  },
+  {
+    "task_id": 9,
+    "type": "multi",
+    "question": "For this patient, how many distinct lab itemids are present in labevents?",
+    "subject_id": 10000032,
+    "expected_answer": {
+      "distinct_itemids": 109
+    }
+  },
+  {
+    "task_id": 10,
+    "type": "multi",
+    "question": "For this patient, count the number of lab results (valuenum not null) per itemid. Return top 10 by count.",
+    "subject_id": 10000048,
+    "expected_answer": []
+  },
+  {
+    "task_id": 11,
+    "type": "multi",
+    "question": "For this patient, find the maximum Creatinine value (itemid=50912) and when it occurred.",
+    "subject_id": 10000068,
+    "expected_answer": {
+      "max_lab": null
+    }
+  },
+  {
+    "task_id": 12,
+    "type": "multi",
+    "question": "For this patient, list the top 5 most common medications (by drug name count).",
+    "subject_id": 10000032,
+    "expected_answer": [
+      {
+        "drug": "Furosemide",
+        "count": 5
+      },
+      {
+        "drug": "Emtricitabine-Tenofovir (Truvada)",
+        "count": 4
+      },
+      {
+        "drug": "Heparin",
+        "count": 4
+      },
+      {
+        "drug": "Influenza Vaccine Quadrivalent",
+        "count": 4
+      },
+      {
+        "drug": "Sodium Chloride 0.9%  Flush",
+        "count": 4
+      }
+    ]
+  },
+  {
+    "task_id": 13,
+    "type": "multi",
+    "question": "For this patient, list admissions and the number of diagnoses per admission.",
+    "subject_id": 10000048,
+    "expected_answer": []
+  },
+  {
+    "task_id": 14,
+    "type": "reasoning",
+    "question": "For this patient, compute the average Lactate (itemid=50813) over time and return (n, avg, min, max).",
+    "subject_id": 10000032,
+    "expected_answer": {
+      "n": 3,
+      "avg": 1.8,
+      "max": 2.1,
+      "min": 1.6
+    }
+  },
+  {
+    "task_id": 15,
+    "type": "reasoning",
+    "question": "For this patient, determine if Creatinine (itemid=50912) is overall increasing (compare first vs last recorded).",
+    "subject_id": 10000048,
+    "expected_answer": {
+      "increasing": null,
+      "last_value": null,
+      "first_value": null
+    }
+  },
+  {
+    "task_id": 16,
+    "type": "reasoning",
+    "question": "For this patient, compute the longest gap (in days) between consecutive admissions.",
+    "subject_id": 10000068,
+    "expected_answer": {
+      "max_gap_days": null
+    }
+  },
+  {
+    "task_id": 17,
+    "type": "reasoning",
+    "question": "For this patient, compute the trend slope of Lactate (itemid=50813) over time using a simple linear regression on (epoch seconds, valuenum).",
+    "subject_id": 10000032,
+    "expected_answer": {
+      "n": 3,
+      "slope": 9.333058528395629e-8
+    }
+  },
+  {
+    "task_id": 18,
+    "type": "multi",
+    "question": "For this patient, return the most recent admission (hadm_id) and its length of stay in hours.",
+    "subject_id": 10000048,
+    "expected_answer": null
+  },
+  {
+    "task_id": 19,
+    "type": "simple",
+    "question": "For this patient, return the latest 10 lab events (itemid, charttime, valuenum, valueuom) ordered by charttime desc.",
+    "subject_id": 10000068,
+    "expected_answer": []
+  },
+  {
+    "task_id": 20,
+    "type": "reasoning",
+    "question": "For this patient, compute how many unique diagnosis codes (icd_code+icd_version) they have across all admissions.",
+    "subject_id": 10000032,
+    "expected_answer": {
+      "unique_diagnosis_codes": 21
+    }
+  }
+]

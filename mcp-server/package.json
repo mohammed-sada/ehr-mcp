@@ -1,0 +1,27 @@
+{
+  "name": "mimiciv-mcp-server-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server MVP (TypeScript) for querying a MIMIC-IV hosp demo dataset in PostgreSQL over StreamableHTTPServerTransport.",
+  "scripts": {
+    "dev": "node --enable-source-maps --loader ts-node/esm src/server/stream.ts",
+    "stdio": "node --enable-source-maps --loader ts-node/esm src/server/stdio.ts",
+    "start": "node --enable-source-maps --loader ts-node/esm src/server/stream.ts",
+    "generate:ground-truth": "node --enable-source-maps --loader ts-node/esm src/evaluation/runner.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/pg": "^8.11.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
+
