@@ -22,9 +22,6 @@ project-root/
 │   ├── schema.sql
 │   ├── load_data.sql
 │   ├── indexes.sql
-│   ├── 00_schema.sql              # wrappers to guarantee init order
-│   ├── 01_load_data.sql
-│   └── 02_indexes.sql
 ├── scripts/
 │   └── prepare_data.sh            # optional helper to copy from ./ehr-data
 └── Makefile                       # bonus: make up/down/logs/psql/reset
