@@ -9,10 +9,13 @@
     "stdio": "node --enable-source-maps --loader ts-node/esm src/server/stdio.ts",
     "start": "node --enable-source-maps --loader ts-node/esm src/server/stream.ts",
     "generate:ground-truth": "node --enable-source-maps --loader ts-node/esm src/evaluation/runner.ts",
+    "chat": "node --enable-source-maps --loader ts-node/esm src/chat.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.0.0",
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "ai": "^4.0.0",
     "dotenv": "^16.4.5",
     "pg": "^8.12.0",
     "zod": "^3.23.8"

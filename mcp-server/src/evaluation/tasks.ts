@@ -1,160 +1,172 @@
 import type { EvalTask } from "./types.js";
 
-// Note: These subject_ids are placeholders for evaluation. If a subject_id does not
-// exist in your demo DB, the expected_answer will be null/empty for that task.
-const SUBJECTS = [10000032, 10000048, 10000068] as const;
+// Subject IDs must exist in the loaded DB (diabetes cohort from init/load_data.sql).
+const SUBJECTS = [10035185, 10009628, 10016810] as const;
+
+/** MIMIC-IV Chemistry: Glucose (serum). */
+const GLUCOSE_ITEMID = 50931;
+/** MIMIC-IV Chemistry: Creatinine (renal monitoring in diabetes). */
+const CREATININE_ITEMID = 50912;
 
 export const tasks: EvalTask[] = [
-  // -----------------------
-  // Simple (demographics)
-  // -----------------------
+  // --- General (not disease-specific; any inpatient record) ---
   {
     id: 1,
     type: "simple",
     subject_id: SUBJECTS[0],
-    question: "What is the patient's gender and anchor age?"
+    question:
+      "What is this patient's gender and anchor age? (General demographics for chart review.)"
   },
   {
     id: 2,
     type: "simple",
     subject_id: SUBJECTS[1],
-    question: "List all admissions for this patient (hadm_id, admittime, dischtime) ordered by admittime."
+    question:
+      "List all hospital admissions for this patient (hadm_id, admittime, dischtime) ordered by admittime."
   },
   {
     id: 3,
     type: "simple",
     subject_id: SUBJECTS[2],
-    question: "How many admissions does this patient have?"
+    question: "How many inpatient admissions does this patient have in the database?"
   },
 
-  // -----------------------
-  // Simple (labs)
-  // -----------------------
+  // --- Diabetes-focused: labs (glucose / renal) ---
   {
     id: 4,
     type: "simple",
     subject_id: SUBJECTS[0],
-    question: "What is the latest Lactate (itemid=50813) value for this patient?",
-    params: { itemid: 50813 }
+    question:
+      "For diabetes monitoring: what is the latest serum glucose (Chemistry Glucose, itemid=50931) measurement and its chart time?",
+    params: { itemid: GLUCOSE_ITEMID }
   },
   {
     id: 5,
     type: "simple",
     subject_id: SUBJECTS[1],
-    question: "What is the latest Creatinine (itemid=50912) value for this patient?",
-    params: { itemid: 50912 }
+    question:
+      "What is the latest serum creatinine (itemid=50912)? (Useful for diabetic kidney disease risk.)",
+    params: { itemid: CREATININE_ITEMID }
   },
   {
     id: 6,
     type: "simple",
     subject_id: SUBJECTS[2],
-    question: "Return the full lab history for Lactate (itemid=50813) for this patient (limit 200).",
-    params: { itemid: 50813, limit: 200 }
+    question:
+      "Return the serum glucose lab history (itemid=50931) for this patient, ordered by time, limit 200 values.",
+    params: { itemid: GLUCOSE_ITEMID, limit: 200 }
   },
 
-  // -----------------------
-  // Simple (diagnoses / meds)
-  // -----------------------
+  // --- Diabetes-focused: diagnoses & medications ---
   {
     id: 7,
     type: "simple",
     subject_id: SUBJECTS[0],
-    question: "List all diagnoses (icd_code + title) for this patient."
+    question:
+      "List all documented diagnoses that indicate diabetes mellitus (ICD-9 codes starting with 250, or ICD-10 E08–E13), with ICD code and long title."
   },
   {
     id: 8,
     type: "simple",
     subject_id: SUBJECTS[1],
-    question: "List this patient's medication history (drug, starttime, stoptime, route) ordered by starttime (limit 200).",
+    question:
+      "List prescription orders that are commonly used for glycemic control (insulin, metformin, sulfonylureas, DPP-4 inhibitors, GLP-1 agonists, SGLT2 inhibitors, TZDs, etc.), with start/stop time and route. Limit 200 rows.",
     params: { limit: 200 }
   },
 
-  // -----------------------
-  // Multi-step (counts, filtering)
-  // -----------------------
+  // --- General: exploratory labs ---
   {
     id: 9,
     type: "multi",
     subject_id: SUBJECTS[0],
-    question: "For this patient, how many distinct lab itemids are present in labevents?"
+    question:
+      "How many distinct lab itemids does this patient have at least one numeric result for? (General lab breadth.)"
   },
   {
     id: 10,
     type: "multi",
     subject_id: SUBJECTS[1],
-    question: "For this patient, count the number of lab results (valuenum not null) per itemid. Return top 10 by count."
+    question:
+      "Count lab results per itemid and return the top 10 itemids by number of measurements."
   },
+
+  // --- Diabetes-focused: glucose extremes & antidiabetic drug usage patterns ---
   {
     id: 11,
     type: "multi",
     subject_id: SUBJECTS[2],
-    question: "For this patient, find the maximum Creatinine value (itemid=50912) and when it occurred.",
-    params: { itemid: 50912 }
+    question:
+      "Find the highest serum glucose value (itemid=50931) for this patient and the time it occurred.",
+    params: { itemid: GLUCOSE_ITEMID }
   },
   {
     id: 12,
     type: "multi",
     subject_id: SUBJECTS[0],
-    question: "For this patient, list the top 5 most common medications (by drug name count)."
+    question:
+      "Among diabetes-related medications (same drug classes as glycemic-control prescriptions), what are the five most frequently ordered distinct drug names?"
   },
   {
     id: 13,
     type: "multi",
     subject_id: SUBJECTS[1],
-    question: "For this patient, list admissions and the number of diagnoses per admission."
+    question:
+      "For each admission, how many diagnosis rows are recorded? (General: admission-level diagnosis density.)"
   },
 
-  // -----------------------
-  // Reasoning-ish (trends/averages; still computed via SQL)
-  // -----------------------
+  // --- Diabetes-focused: glucose trends & renal trajectory ---
   {
     id: 14,
     type: "reasoning",
     subject_id: SUBJECTS[0],
-    question: "For this patient, compute the average Lactate (itemid=50813) over time and return (n, avg, min, max).",
-    params: { itemid: 50813 }
+    question:
+      "Summarize serum glucose (itemid=50931): sample count, mean, min, and max across all available measurements.",
+    params: { itemid: GLUCOSE_ITEMID }
   },
   {
     id: 15,
     type: "reasoning",
     subject_id: SUBJECTS[1],
-    question: "For this patient, determine if Creatinine (itemid=50912) is overall increasing (compare first vs last recorded).",
-    params: { itemid: 50912 }
+    question:
+      "Compare first vs last serum creatinine (itemid=50912) in time order; is the value higher at the end than at the start?",
+    params: { itemid: CREATININE_ITEMID }
   },
   {
     id: 16,
     type: "reasoning",
     subject_id: SUBJECTS[2],
-    question: "For this patient, compute the longest gap (in days) between consecutive admissions."
+    question:
+      "What is the longest gap in days between consecutive admissions? (General care continuity.)"
   },
   {
     id: 17,
     type: "reasoning",
     subject_id: SUBJECTS[0],
-    question: "For this patient, compute the trend slope of Lactate (itemid=50813) over time using a simple linear regression on (epoch seconds, valuenum).",
-    params: { itemid: 50813 }
+    question:
+      "Fit a simple linear regression of serum glucose (itemid=50931) vs time (epoch seconds); report slope and sample size.",
+    params: { itemid: GLUCOSE_ITEMID }
   },
 
-  // -----------------------
-  // Additional mixed tasks to reach ~20
-  // -----------------------
+  // --- Mixed ---
   {
     id: 18,
     type: "multi",
     subject_id: SUBJECTS[1],
-    question: "For this patient, return the most recent admission (hadm_id) and its length of stay in hours."
+    question:
+      "For the most recent admission only, return hadm_id, admit/discharge times, and length of stay in hours."
   },
   {
     id: 19,
     type: "simple",
     subject_id: SUBJECTS[2],
-    question: "For this patient, return the latest 10 lab events (itemid, charttime, valuenum, valueuom) ordered by charttime desc."
+    question:
+      "Return the 10 most recent lab events of any type (itemid, charttime, valuenum, valueuom), newest first."
   },
   {
     id: 20,
     type: "reasoning",
     subject_id: SUBJECTS[0],
-    question: "For this patient, compute how many unique diagnosis codes (icd_code+icd_version) they have across all admissions."
+    question:
+      "How many distinct diabetes mellitus ICD codes (ICD-9 250* or ICD-10 E08–E13) are documented for this patient across all admissions?"
   }
 ];
-

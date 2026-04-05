@@ -14,7 +14,10 @@ const EnvSchema = z.object({
 
   DB_MAX: z.coerce.number().int().positive().default(10),
   DB_IDLE_TIMEOUT_MS: z.coerce.number().int().positive().default(30_000),
-  DB_CONNECTION_TIMEOUT_MS: z.coerce.number().int().positive().default(10_000)
+  DB_CONNECTION_TIMEOUT_MS: z.coerce.number().int().positive().default(10_000),
+
+  OPENROUTER_API_KEY: z.string().min(1),
+  OPENROUTER_MODEL: z.string().min(1).default("openai/gpt-oss-120b:free"),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

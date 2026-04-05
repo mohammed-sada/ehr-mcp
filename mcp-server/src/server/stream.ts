@@ -142,6 +142,34 @@ async function main() {
         return;
       }
 
+      // Direct JSON routes — bypass MCP transport entirely to avoid loopback interference
+      if (req.method === "GET") {
+        const sp = url.searchParams;
+        const subjectId = Number(sp.get("subject_id"));
+        const itemid = Number(sp.get("itemid"));
+        const limit = sp.get("limit") ? Number(sp.get("limit")) : undefined;
+        const json = (data: unknown) => {
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json; charset=utf-8");
+          res.end(JSON.stringify(data));
+        };
+        if (url.pathname === "/api/patient-info" && subjectId) {
+          json(await queries.getPatientInfo(subjectId)); return;
+        }
+        if (url.pathname === "/api/latest-lab" && subjectId && itemid) {
+          json(await queries.getLatestLab(subjectId, itemid)); return;
+        }
+        if (url.pathname === "/api/lab-history" && subjectId && itemid) {
+          json(await queries.getLabHistory(subjectId, itemid, limit)); return;
+        }
+        if (url.pathname === "/api/diagnoses" && subjectId) {
+          json(await queries.getDiagnoses(subjectId)); return;
+        }
+        if (url.pathname === "/api/medications" && subjectId) {
+          json(await queries.getMedications(subjectId, limit ?? 20)); return;
+        }
+      }
+
       // Friendly REST-like endpoints that internally call MCP tools via the same transport.
       // This keeps the response fully MCP-streamable while offering simple URLs for demos.
       const mapping = mapRouteToTool(url.pathname);
@@ -210,4 +238,3 @@ main().catch((err) => {
   logger.error("Fatal startup error", err);
   process.exit(1);
 });
-

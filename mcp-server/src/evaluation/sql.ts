@@ -128,6 +128,7 @@ export function taskToSql(task: EvalTask): TaskSql {
     }
 
     case 7:
+      // Diabetes mellitus diagnoses only (ICD-9 250*; ICD-10 E08–E13).
       return {
         text: `
           SELECT COALESCE(
@@ -143,6 +144,16 @@ export function taskToSql(task: EvalTask): TaskSql {
                 ON did.icd_code = di.icd_code
                AND did.icd_version = di.icd_version
               WHERE di.subject_id = $1
+                AND (
+                  (di.icd_version = 9 AND di.icd_code LIKE '250%')
+                  OR (
+                    di.icd_version = 10
+                    AND (
+                      di.icd_code LIKE 'E11%' OR di.icd_code LIKE 'E10%' OR di.icd_code LIKE 'E13%'
+                      OR di.icd_code LIKE 'E08%' OR di.icd_code LIKE 'E09%'
+                    )
+                  )
+                )
             ),
             '[]'::jsonb
           ) AS expected_answer
@@ -152,6 +163,7 @@ export function taskToSql(task: EvalTask): TaskSql {
 
     case 8: {
       const limit = getLimit(task, 200);
+      // Diabetes-related medications (common oral agents, insulin, incretins, SGLT2, etc.).
       return {
         text: `
           SELECT COALESCE(
@@ -167,6 +179,16 @@ export function taskToSql(task: EvalTask): TaskSql {
                 SELECT hadm_id, starttime, stoptime, drug, route
                 FROM hosp.prescriptions
                 WHERE subject_id = $1
+                  AND drug IS NOT NULL
+                  AND (
+                    drug ILIKE '%insulin%' OR drug ILIKE '%metformin%' OR drug ILIKE '%glipizide%'
+                    OR drug ILIKE '%glimepiride%' OR drug ILIKE '%glyburide%' OR drug ILIKE '%sitagliptin%'
+                    OR drug ILIKE '%saxagliptin%' OR drug ILIKE '%linagliptin%' OR drug ILIKE '%liraglutide%'
+                    OR drug ILIKE '%semaglutide%' OR drug ILIKE '%dulaglutide%' OR drug ILIKE '%exenatide%'
+                    OR drug ILIKE '%empagliflozin%' OR drug ILIKE '%canagliflozin%' OR drug ILIKE '%dapagliflozin%'
+                    OR drug ILIKE '%pioglitazone%' OR drug ILIKE '%rosiglitazone%' OR drug ILIKE '%acarbose%'
+                    OR drug ILIKE '%repaglinide%' OR drug ILIKE '%nateglinide%'
+                  )
                 ORDER BY starttime ASC NULLS LAST
                 LIMIT $2
               ) t
@@ -238,6 +260,7 @@ export function taskToSql(task: EvalTask): TaskSql {
     }
 
     case 12:
+      // Top 5 diabetes-related drugs by frequency (same drug filter as task 8).
       return {
         text: `
           SELECT COALESCE(
@@ -247,6 +270,16 @@ export function taskToSql(task: EvalTask): TaskSql {
                 SELECT COALESCE(drug, '') AS drug, COUNT(*)::int AS n
                 FROM hosp.prescriptions
                 WHERE subject_id = $1
+                  AND drug IS NOT NULL
+                  AND (
+                    drug ILIKE '%insulin%' OR drug ILIKE '%metformin%' OR drug ILIKE '%glipizide%'
+                    OR drug ILIKE '%glimepiride%' OR drug ILIKE '%glyburide%' OR drug ILIKE '%sitagliptin%'
+                    OR drug ILIKE '%saxagliptin%' OR drug ILIKE '%linagliptin%' OR drug ILIKE '%liraglutide%'
+                    OR drug ILIKE '%semaglutide%' OR drug ILIKE '%dulaglutide%' OR drug ILIKE '%exenatide%'
+                    OR drug ILIKE '%empagliflozin%' OR drug ILIKE '%canagliflozin%' OR drug ILIKE '%dapagliflozin%'
+                    OR drug ILIKE '%pioglitazone%' OR drug ILIKE '%rosiglitazone%' OR drug ILIKE '%acarbose%'
+                    OR drug ILIKE '%repaglinide%' OR drug ILIKE '%nateglinide%'
+                  )
                 GROUP BY COALESCE(drug, '')
                 ORDER BY n DESC
                 LIMIT 5
@@ -433,6 +466,7 @@ export function taskToSql(task: EvalTask): TaskSql {
       };
 
     case 20:
+      // Distinct diabetes-related ICD codes documented for this patient.
       return {
         text: `
           SELECT jsonb_build_object(
@@ -440,8 +474,18 @@ export function taskToSql(task: EvalTask): TaskSql {
             COALESCE(
               (
                 SELECT COUNT(DISTINCT (icd_code, icd_version))
-                FROM hosp.diagnoses_icd
-                WHERE subject_id = $1
+                FROM hosp.diagnoses_icd di
+                WHERE di.subject_id = $1
+                  AND (
+                    (di.icd_version = 9 AND di.icd_code LIKE '250%')
+                    OR (
+                      di.icd_version = 10
+                      AND (
+                        di.icd_code LIKE 'E11%' OR di.icd_code LIKE 'E10%' OR di.icd_code LIKE 'E13%'
+                        OR di.icd_code LIKE 'E08%' OR di.icd_code LIKE 'E09%'
+                      )
+                    )
+                  )
               ),
               0
             )
