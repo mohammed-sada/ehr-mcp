@@ -1,0 +1,6 @@
+{
+  "predictions": [
+    { "task_id": 1, "answer": { "gender": "M", "anchor_age": 70 } },
+    { "task_id": 3, "answer": { "valuenum": 122, "charttime": "2180-06-04T12:00:00" } }
+  ]
+}

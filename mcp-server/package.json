@@ -9,6 +9,8 @@
     "stdio": "node --enable-source-maps --loader ts-node/esm src/server/stdio.ts",
     "start": "node --enable-source-maps --loader ts-node/esm src/server/stream.ts",
     "generate:ground-truth": "node --enable-source-maps --loader ts-node/esm src/evaluation/runner.ts",
+    "evaluate": "node --enable-source-maps --loader ts-node/esm src/evaluation/cli.ts",
+    "eval": "node --enable-source-maps --loader ts-node/esm src/agent/index.ts",
     "chat": "node --enable-source-maps --loader ts-node/esm src/chat.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

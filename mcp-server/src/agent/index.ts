@@ -10,7 +10,7 @@
  *   4. npm install
  *
  * Usage:
- *   npm run eval              → run all 35 tasks
+ *   npm run eval              → run all 20 tasks
  *   npm run eval -- --task 4  → run a single task (good for testing)
  *
  * Switching models (optional):
@@ -44,7 +44,7 @@ async function main() {
   if (taskFilter) {
     logger.info(`Task  : #${taskFilter} only`);
   } else {
-    logger.info(`Tasks : all 35`);
+    logger.info(`Tasks : all 20`);
   }
 
   const report = await runEvaluation(taskFilter);

@@ -1,0 +1,37 @@
+{
+  "model": "openai/gpt-oss-120b:free",
+  "ran_at": "2026-04-17T19:42:18.090Z",
+  "mcp_server_url": "http://localhost:3333/mcp",
+  "tasks": [
+    {
+      "task_id": 19,
+      "type": "reasoning",
+      "question": "How many distinct diabetes-related ICD codes (ICD-9 250* or ICD-10 E08–E13) are documented for this patient across all admissions?",
+      "subject_id": 10014354,
+      "llm_answer": "The patient’s diagnoses include the following distinct diabetes‑related ICD codes (ICD‑10 E08–E13 or ICD‑9 250*):  \n\n- **E119** – Type 2 diabetes mellitus without complications  \n- **E0865** – Diabetes mellitus due to underlying condition with hyperglycemia  \n- **E1121** – Type 2 diabetes mellitus with diabetic nephropathy  \n- **E1122** – Type 2 diabetes mellitus with diabetic chronic kidney disease  \n- **E1136** – Type 2 diabetes mellitus with diabetic cataract  \n- **E1165** – Type 2 diabetes mellitus with hyperglycemia  \n- **E11649** – Type 2 diabetes mellitus with hypoglycemia without coma  \n\nNo ICD‑9 250‑coded diagnoses appear in the record.  \n\n**Therefore, the patient has 7 distinct diabetes‑related ICD codes documented across all admissions.**",
+      "expected_answer": {
+        "unique_diabetes_codes": 8
+      },
+      "correct": true,
+      "score": 1,
+      "tools_called": [
+        "diagnoses"
+      ],
+      "tool_call_count": 1,
+      "duration_ms": 49042
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "correct": 1,
+    "accuracy": 1,
+    "avgToolCalls": 1,
+    "byType": {
+      "reasoning": {
+        "total": 1,
+        "correct": 1,
+        "accuracy": 1
+      }
+    }
+  }
+}

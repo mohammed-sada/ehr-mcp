@@ -16,4 +16,3 @@ export interface LabHistoryRow {
   valuenum: number | null;
   valueuom: string | null;
 }
-

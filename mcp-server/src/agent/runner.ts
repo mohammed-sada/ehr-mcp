@@ -7,19 +7,21 @@
  * - OpenAI-compatible — we just point @ai-sdk/openai at OpenRouter's base URL
  *
  * How tool selection works:
- *   1. This runner calls the MCP server's tools/list → discovers all available tools
- *   2. It wraps each tool so the Vercel AI SDK can pass them to the LLM
+ *   1. Uses the MCP SDK Client to connect to the MCP server and discover tools
+ *   2. Wraps each tool with its real JSON Schema so the LLM sees exact parameters
  *   3. The LLM reads the question + tool descriptions and AUTONOMOUSLY picks which tool(s) to call
- *   4. The tool.execute() function fires → calls the MCP server → queries PostgreSQL → returns data
+ *   4. tool.execute() → client.callTool() → MCP server → PostgreSQL → data
  *   5. The LLM reads the data and answers → scored against ground_truth.json
  */
 
-import { generateText, tool } from "ai";
+import { generateText, tool, jsonSchema } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
-import { z } from "zod";
 import { readFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
 import { tasks } from "../evaluation/tasks.js";
 import { logger } from "../utils/logger.js";
@@ -60,66 +62,51 @@ export interface EvalReport {
   };
 }
 
-// ─── MCP Tool Discovery ───────────────────────────────────────────────────────
+// ─── MCP Client ───────────────────────────────────────────────────────────────
 
-async function discoverMcpTools(
-  mcpUrl: string
-): Promise<Record<string, ReturnType<typeof tool>>> {
-  const resp = await fetch(mcpUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} }),
-  });
+interface McpConnection {
+  client: Client;
+  transport: StreamableHTTPClientTransport;
+  tools: Record<string, ReturnType<typeof tool>>;
+}
 
-  if (!resp.ok) {
-    throw new Error(
-      `Cannot reach MCP server at ${mcpUrl}\n` +
-      `→ Make sure it is running: npm run dev\n` +
-      `→ HTTP status: ${resp.status} ${resp.statusText}`
-    );
-  }
+async function connectMcpAndDiscoverTools(mcpUrl: string): Promise<McpConnection> {
+  const url = new URL(mcpUrl);
+  const transport = new StreamableHTTPClientTransport(url);
+  const client = new Client({ name: "ehr-eval-agent", version: "0.1.0" });
 
-  const data = (await resp.json()) as {
-    result?: { tools: Array<{ name: string; description: string }> };
-  };
+  await client.connect(transport);
 
-  const mcpTools = data.result?.tools ?? [];
+  const { tools: mcpTools } = await client.listTools();
   if (mcpTools.length === 0) throw new Error("MCP server returned 0 tools.");
 
   logger.info(`Discovered ${mcpTools.length} tools: ${mcpTools.map((t) => t.name).join(", ")}`);
 
-  let callId = 100;
-  const wrapped: Record<string, ReturnType<typeof tool>> = {};
+  const wrapped: Record<string, unknown> = {};
 
   for (const t of mcpTools) {
     const name = t.name;
     wrapped[name] = tool({
-      description: t.description,
-      parameters: z.record(z.unknown()),
+      description: t.description ?? name,
+      parameters: jsonSchema(t.inputSchema as any),
       execute: async (args) => {
-        const r = await fetch(mcpUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            id: callId++,
-            method: "tools/call",
-            params: { name, arguments: args },
-          }),
-        });
-        if (!r.ok) return { error: `MCP call failed: ${r.status}` };
-        const result = (await r.json()) as {
-          result?: { content?: Array<{ type: string; text?: string }> };
-          error?: { message: string };
-        };
-        if (result.error) return { error: result.error.message };
-        const text = result.result?.content?.find((c) => c.type === "text")?.text ?? "";
-        try { return JSON.parse(text); } catch { return { raw: text }; }
+        const result = await client.callTool({ name, arguments: args as Record<string, unknown> });
+
+        if (!("content" in result)) return result;
+
+        const textItem = (result.content as Array<{ type: string; text?: string }>)
+          .find((c) => c.type === "text");
+        if (!textItem?.text) return { error: "No text content in response" };
+        try { return JSON.parse(textItem.text); } catch { return { raw: textItem.text }; }
       },
     });
   }
 
-  return wrapped;
+  return {
+    client,
+    transport,
+    tools: wrapped as Record<string, ReturnType<typeof tool>>,
+  };
 }
 
 // ─── Single Task Execution ────────────────────────────────────────────────────
@@ -220,7 +207,6 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
   const mcpUrl = `http://localhost:${env.PORT}/mcp`;
   const modelId = env.OPENROUTER_MODEL;
 
-  // OpenRouter is fully OpenAI-compatible — just swap the base URL
   const openrouter = createOpenAI({
     apiKey: env.OPENROUTER_API_KEY,
     baseURL: "https://openrouter.ai/api/v1",
@@ -234,7 +220,7 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
   const gtPath = resolve(__dirname, "../evaluation/output/ground_truth.json");
   const groundTruth: GroundTruthRow[] = JSON.parse(await readFile(gtPath, "utf8"));
 
-  const mcpTools = await discoverMcpTools(mcpUrl);
+  const mcp = await connectMcpAndDiscoverTools(mcpUrl);
 
   const tasksToRun = taskFilter
     ? tasks.filter((t) => t.id === taskFilter)
@@ -252,7 +238,7 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
     logger.info(`\n── Task ${task.id}/${tasksToRun.length} [${task.type.toUpperCase()}] ──`);
     logger.info(`   ${task.question}`);
 
-    const result = await runTask(task, mcpTools, model, gt);
+    const result = await runTask(task, mcp.tools, model, gt);
     taskResults.push(result);
 
     const mark = result.correct ? "✓" : "✗";
@@ -262,6 +248,8 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
       `${result.duration_ms}ms`
     );
   }
+
+  await mcp.transport.close();
 
   // ── Build summary ──────────────────────────────────────────────────────────
   const total = taskResults.length;

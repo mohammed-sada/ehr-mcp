@@ -44,5 +44,9 @@ CREATE INDEX IF NOT EXISTS idx_diagnoses_icd_icd_code ON hosp.diagnoses_icd (icd
 CREATE INDEX IF NOT EXISTS idx_d_labitems_label ON hosp.d_labitems (label);
 CREATE INDEX IF NOT EXISTS idx_d_icd_diagnoses_long_title ON hosp.d_icd_diagnoses (long_title);
 
+-- notes (study / MCP writes)
+CREATE INDEX IF NOT EXISTS idx_notes_subject_id ON hosp.notes (subject_id);
+CREATE INDEX IF NOT EXISTS idx_notes_created_at ON hosp.notes (subject_id, created_at DESC);
+
 INSERT INTO hosp._init_status(name) VALUES ('indexes')
 ON CONFLICT (name) DO NOTHING;

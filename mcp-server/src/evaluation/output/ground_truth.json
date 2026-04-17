@@ -2,7 +2,7 @@
   {
     "task_id": 1,
     "type": "simple",
-    "question": "What is this patient's gender and anchor age? (General demographics for chart review.)",
+    "question": "What is this patient's gender and anchor age?",
     "subject_id": 10035185,
     "expected_answer": {
       "patient": {
@@ -16,416 +16,521 @@
     "task_id": 2,
     "type": "simple",
     "question": "List all hospital admissions for this patient (hadm_id, admittime, dischtime) ordered by admittime.",
-    "subject_id": 10009628,
+    "subject_id": 10014354,
     "expected_answer": [
       {
-        "hadm_id": 25926192,
-        "admittime": "2153-09-17T17:08:00",
-        "dischtime": "2153-09-25T13:20:00"
+        "hadm_id": 22741225,
+        "admittime": "2146-10-08T23:47:00",
+        "dischtime": "2146-10-12T18:20:00"
+      },
+      {
+        "hadm_id": 26722126,
+        "admittime": "2146-11-09T01:53:00",
+        "dischtime": "2146-11-09T13:13:00"
+      },
+      {
+        "hadm_id": 28335091,
+        "admittime": "2147-04-26T16:44:00",
+        "dischtime": "2147-04-29T15:30:00"
+      },
+      {
+        "hadm_id": 27494880,
+        "admittime": "2147-06-04T00:42:00",
+        "dischtime": "2147-06-04T15:00:00"
+      },
+      {
+        "hadm_id": 22502504,
+        "admittime": "2147-09-12T05:06:00",
+        "dischtime": "2147-09-12T19:00:00"
+      },
+      {
+        "hadm_id": 26013492,
+        "admittime": "2147-11-14T22:12:00",
+        "dischtime": "2147-11-16T15:00:00"
+      },
+      {
+        "hadm_id": 29780751,
+        "admittime": "2147-11-26T00:39:00",
+        "dischtime": "2147-11-30T16:54:00"
+      },
+      {
+        "hadm_id": 22508257,
+        "admittime": "2148-05-10T23:29:00",
+        "dischtime": "2148-05-20T14:30:00"
+      },
+      {
+        "hadm_id": 23132022,
+        "admittime": "2148-06-24T15:22:00",
+        "dischtime": "2148-06-28T13:54:00"
+      },
+      {
+        "hadm_id": 27487226,
+        "admittime": "2148-06-30T01:09:00",
+        "dischtime": "2148-07-13T19:35:00"
+      },
+      {
+        "hadm_id": 27562275,
+        "admittime": "2148-07-18T02:31:00",
+        "dischtime": "2148-07-20T17:47:00"
+      },
+      {
+        "hadm_id": 29600294,
+        "admittime": "2148-08-14T22:57:00",
+        "dischtime": "2148-08-18T21:12:00"
+      },
+      {
+        "hadm_id": 26486158,
+        "admittime": "2148-08-22T15:18:00",
+        "dischtime": "2148-09-08T12:00:00"
+      },
+      {
+        "hadm_id": 20900955,
+        "admittime": "2149-03-04T23:14:00",
+        "dischtime": "2149-03-05T14:59:00"
+      },
+      {
+        "hadm_id": 24096336,
+        "admittime": "2149-06-19T22:54:00",
+        "dischtime": "2149-06-20T13:48:00"
+      },
+      {
+        "hadm_id": 26173805,
+        "admittime": "2149-09-17T22:54:00",
+        "dischtime": "2149-09-18T10:45:00"
+      },
+      {
+        "hadm_id": 24980601,
+        "admittime": "2150-02-04T20:12:00",
+        "dischtime": "2150-02-08T14:10:00"
+      },
+      {
+        "hadm_id": 29757856,
+        "admittime": "2150-04-10T02:40:00",
+        "dischtime": "2150-04-15T18:00:00"
+      },
+      {
+        "hadm_id": 26228185,
+        "admittime": "2150-04-30T20:19:00",
+        "dischtime": "2150-05-07T14:10:00"
+      },
+      {
+        "hadm_id": 24357615,
+        "admittime": "2150-05-09T16:09:00",
+        "dischtime": "2150-05-10T15:59:00"
       }
     ]
   },
   {
     "task_id": 3,
     "type": "simple",
-    "question": "How many inpatient admissions does this patient have in the database?",
-    "subject_id": 10016810,
+    "question": "What is the most recent serum glucose (itemid=50931) value and when was it recorded?",
+    "subject_id": 10009628,
     "expected_answer": {
-      "admissions_count": 1
+      "latest_lab": {
+        "label": "Glucose",
+        "itemid": 50931,
+        "hadm_id": 25926192,
+        "valuenum": 59,
+        "valueuom": "mg/dL",
+        "charttime": "2153-09-23T05:22:00",
+        "subject_id": 10009628
+      }
     }
   },
   {
     "task_id": 4,
     "type": "simple",
-    "question": "For diabetes monitoring: what is the latest serum glucose (Chemistry Glucose, itemid=50931) measurement and its chart time?",
-    "subject_id": 10035185,
+    "question": "What is this patient's latest Hemoglobin A1c (HbA1c, itemid=50852) result?",
+    "subject_id": 10037928,
     "expected_answer": {
       "latest_lab": {
-        "label": "Glucose",
-        "itemid": 50931,
-        "hadm_id": 22580999,
-        "valuenum": 157,
-        "valueuom": "mg/dL",
-        "charttime": "2120-05-17T06:35:00",
-        "subject_id": 10035185
+        "label": "% Hemoglobin A1c",
+        "itemid": 50852,
+        "hadm_id": null,
+        "valuenum": 10.8,
+        "valueuom": "%",
+        "charttime": "2184-07-18T15:41:00",
+        "subject_id": 10037928
       }
     }
   },
   {
     "task_id": 5,
     "type": "simple",
-    "question": "What is the latest serum creatinine (itemid=50912)? (Useful for diabetic kidney disease risk.)",
-    "subject_id": 10009628,
+    "question": "What is the latest serum creatinine (itemid=50912) for this patient?",
+    "subject_id": 10015860,
     "expected_answer": {
       "latest_lab": {
         "label": "Creatinine",
         "itemid": 50912,
-        "hadm_id": 25926192,
-        "valuenum": 1,
+        "hadm_id": null,
+        "valuenum": 6.7,
         "valueuom": "mg/dL",
-        "charttime": "2153-09-24T04:20:00",
-        "subject_id": 10009628
+        "charttime": "2194-11-19T07:15:00",
+        "subject_id": 10015860
       }
     }
   },
   {
     "task_id": 6,
     "type": "simple",
-    "question": "Return the serum glucose lab history (itemid=50931) for this patient, ordered by time, limit 200 values.",
-    "subject_id": 10016810,
+    "question": "List all diabetes-related ICD diagnoses (ICD-9 250* or ICD-10 E08–E13) documented for this patient, with ICD code and long title.",
+    "subject_id": 10007795,
     "expected_answer": [
       {
-        "hadm_id": 20973395,
-        "valuenum": 114,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-15T23:30:00"
+        "hadm_id": 20285402,
+        "icd_code": "25000",
+        "long_title": "Diabetes mellitus without mention of complication, type II or unspecified type, not stated as uncontrolled",
+        "icd_version": 9
       },
       {
-        "hadm_id": 20973395,
-        "valuenum": 112,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-16T02:30:00"
-      },
-      {
-        "hadm_id": 20973395,
-        "valuenum": 104,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-16T12:35:00"
-      },
-      {
-        "hadm_id": 20973395,
-        "valuenum": 134,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-17T01:07:00"
-      },
-      {
-        "hadm_id": 20973395,
-        "valuenum": 138,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-17T13:16:00"
-      },
-      {
-        "hadm_id": 20973395,
-        "valuenum": 192,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-18T02:53:00"
-      },
-      {
-        "hadm_id": 20973395,
-        "valuenum": 188,
-        "valueuom": "mg/dL",
-        "charttime": "2185-06-18T15:30:00"
+        "hadm_id": 27962747,
+        "icd_code": "25000",
+        "long_title": "Diabetes mellitus without mention of complication, type II or unspecified type, not stated as uncontrolled",
+        "icd_version": 9
       }
     ]
   },
   {
     "task_id": 7,
     "type": "simple",
-    "question": "List all documented diagnoses that indicate diabetes mellitus (ICD-9 codes starting with 250, or ICD-10 E08–E13), with ICD code and long title.",
-    "subject_id": 10035185,
+    "question": "List all glycemic-control medications (insulin, metformin, sulfonylureas, DPP-4i, GLP-1 RA, SGLT2i, TZDs) prescribed for this patient, with drug name, route, and start/stop times.",
+    "subject_id": 10023239,
     "expected_answer": [
       {
-        "hadm_id": 22580999,
-        "icd_code": "25002",
-        "long_title": "Diabetes mellitus without mention of complication, type II or unspecified type, uncontrolled",
-        "icd_version": 9
+        "drug": "Insulin Human Regular",
+        "route": "IV DRIP",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-19T19:00:00",
+        "starttime": "2137-06-19T20:00:00"
+      },
+      {
+        "drug": "Insulin Human Regular",
+        "route": "IV DRIP",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-20T10:00:00",
+        "starttime": "2137-06-19T21:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T06:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T11:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T14:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T18:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T19:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T21:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T22:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T22:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T22:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-20T22:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-21T02:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-21T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T15:00:00",
+        "starttime": "2137-06-21T08:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T15:00:00",
+        "starttime": "2137-06-21T11:00:00"
+      },
+      {
+        "drug": "Insulin Pump (Self Administering Medication)",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-22T19:00:00",
+        "starttime": "2137-06-21T17:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T10:00:00",
+        "starttime": "2137-06-21T22:00:00"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC",
+        "hadm_id": 29295881,
+        "stoptime": "2137-06-21T15:00:00",
+        "starttime": "2137-06-21T22:00:00"
+      },
+      {
+        "drug": "Insulin Human Regular",
+        "route": "IV DRIP",
+        "hadm_id": 21759936,
+        "stoptime": "2140-10-04T14:00:00",
+        "starttime": "2140-10-03T12:00:00"
+      },
+      {
+        "drug": "Insulin Pump (Self Administering Medication)",
+        "route": "SC",
+        "hadm_id": 21759936,
+        "stoptime": "2140-10-06T16:00:00",
+        "starttime": "2140-10-04T14:00:00"
+      },
+      {
+        "drug": "Insulin Pump (Self Administering Medication)",
+        "route": "SC",
+        "hadm_id": 21759936,
+        "stoptime": "2140-10-08T19:00:00",
+        "starttime": "2140-10-06T17:00:00"
       }
     ]
   },
   {
     "task_id": 8,
-    "type": "simple",
-    "question": "List prescription orders that are commonly used for glycemic control (insulin, metformin, sulfonylureas, DPP-4 inhibitors, GLP-1 agonists, SGLT2 inhibitors, TZDs, etc.), with start/stop time and route. Limit 200 rows.",
-    "subject_id": 10009628,
-    "expected_answer": [
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-17T22:00:00",
-        "starttime": "2153-09-17T08:00:00"
+    "type": "multi",
+    "question": "Retrieve the latest values for a diabetes lab panel: serum glucose (itemid=50931), HbA1c (itemid=50852), creatinine (itemid=50912), and potassium (itemid=50971).",
+    "subject_id": 10014354,
+    "expected_answer": {
+      "hba1c": {
+        "valuenum": 9.5,
+        "valueuom": "%",
+        "charttime": "2151-01-15T13:10:00"
       },
-      {
-        "drug": "GlipiZIDE",
-        "route": "PO/NG",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-19T10:00:00",
-        "starttime": "2153-09-17T10:00:00"
+      "glucose": {
+        "valuenum": 279,
+        "valueuom": "mg/dL",
+        "charttime": "2150-10-08T12:10:00"
       },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-17T22:00:00",
-        "starttime": "2153-09-17T19:00:00"
+      "potassium": {
+        "valuenum": 4,
+        "valueuom": "mEq/L",
+        "charttime": "2150-10-08T12:10:00"
       },
-      {
-        "drug": "MetFORMIN (Glucophage)",
-        "route": "PO",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-19T10:00:00",
-        "starttime": "2153-09-17T20:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-19T10:00:00",
-        "starttime": "2153-09-17T22:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-19T10:00:00",
-        "starttime": "2153-09-17T23:00:00"
-      },
-      {
-        "drug": "Insulin Human Regular",
-        "route": "IV DRIP",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-20T10:00:00",
-        "starttime": "2153-09-19T11:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-20T16:00:00",
-        "starttime": "2153-09-20T08:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-20T16:00:00",
-        "starttime": "2153-09-20T11:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T17:00:00",
-        "starttime": "2153-09-20T12:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T17:00:00",
-        "starttime": "2153-09-20T17:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T16:00:00",
-        "starttime": "2153-09-20T17:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T17:00:00",
-        "starttime": "2153-09-20T19:00:00"
-      },
-      {
-        "drug": "Insulin Human Regular",
-        "route": "IV DRIP",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T08:00:00",
-        "starttime": "2153-09-20T19:00:00"
-      },
-      {
-        "drug": "GlipiZIDE",
-        "route": "PO/NG",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T17:00:00",
-        "starttime": "2153-09-20T20:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T10:00:00",
-        "starttime": "2153-09-21T11:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T17:00:00",
-        "starttime": "2153-09-21T11:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-22T16:00:00",
-        "starttime": "2153-09-21T12:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-22T16:00:00",
-        "starttime": "2153-09-21T18:00:00"
-      },
-      {
-        "drug": "MetFORMIN (Glucophage)",
-        "route": "PO",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-23T16:00:00",
-        "starttime": "2153-09-21T20:00:00"
-      },
-      {
-        "drug": "MetFORMIN (Glucophage)",
-        "route": "PO",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-21T17:00:00",
-        "starttime": "2153-09-21T20:00:00"
-      },
-      {
-        "drug": "GlipiZIDE",
-        "route": "PO",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-23T17:00:00",
-        "starttime": "2153-09-21T20:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-25T17:00:00",
-        "starttime": "2153-09-22T12:00:00"
-      },
-      {
-        "drug": "Insulin",
-        "route": "SC",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-25T17:00:00",
-        "starttime": "2153-09-22T17:00:00"
-      },
-      {
-        "drug": "MetFORMIN (Glucophage)",
-        "route": "PO",
-        "hadm_id": 25926192,
-        "stoptime": "2153-09-25T17:00:00",
-        "starttime": "2153-09-23T20:00:00"
+      "creatinine": {
+        "valuenum": 1.1,
+        "valueuom": "mg/dL",
+        "charttime": "2150-10-08T12:10:00"
       }
-    ]
+    }
   },
   {
     "task_id": 9,
     "type": "multi",
-    "question": "How many distinct lab itemids does this patient have at least one numeric result for? (General lab breadth.)",
-    "subject_id": 10035185,
+    "question": "What are the highest and lowest serum glucose (itemid=50931) values ever recorded for this patient, and when did they occur?",
+    "subject_id": 10037928,
     "expected_answer": {
-      "distinct_itemids": 79
+      "max_glucose": {
+        "valuenum": 996,
+        "charttime": "2177-07-14T15:15:00"
+      },
+      "min_glucose": {
+        "valuenum": 43,
+        "charttime": "2177-07-17T07:40:00"
+      }
     }
   },
   {
     "task_id": 10,
     "type": "multi",
-    "question": "Count lab results per itemid and return the top 10 itemids by number of measurements.",
-    "subject_id": 10009628,
-    "expected_answer": [
-      {
-        "count": 16,
-        "itemid": 51221
-      },
-      {
-        "count": 15,
-        "itemid": 50820
-      },
-      {
-        "count": 13,
-        "itemid": 50809
-      },
-      {
-        "count": 11,
-        "itemid": 50802
-      },
-      {
-        "count": 11,
-        "itemid": 50804
-      },
-      {
-        "count": 11,
-        "itemid": 50818
-      },
-      {
-        "count": 11,
-        "itemid": 50821
-      },
-      {
-        "count": 11,
-        "itemid": 50902
-      },
-      {
-        "count": 11,
-        "itemid": 50971
-      },
-      {
-        "count": 11,
-        "itemid": 50983
-      }
-    ]
+    "question": "Does this patient have documented diagnoses for any of the following diabetes comorbidities: chronic kidney disease, hypertension, or cardiovascular/heart disease? List which ones are present.",
+    "subject_id": 10015860,
+    "expected_answer": {
+      "has_ckd": true,
+      "has_hypertension": true,
+      "has_cardiovascular": true
+    }
   },
   {
     "task_id": 11,
     "type": "multi",
-    "question": "Find the highest serum glucose value (itemid=50931) for this patient and the time it occurred.",
-    "subject_id": 10016810,
-    "expected_answer": {
-      "max_lab": {
-        "itemid": 50931,
-        "charttime": "2185-06-18T02:53:00",
-        "max_valuenum": 192
+    "question": "What distinct insulin formulations (drug names) and routes of administration have been used for this patient?",
+    "subject_id": 10014354,
+    "expected_answer": [
+      {
+        "drug": "Insulin",
+        "route": "IV"
+      },
+      {
+        "drug": "Insulin",
+        "route": "SC"
+      },
+      {
+        "drug": "Insulin (Regular) for Hyperkalemia",
+        "route": "IV"
+      },
+      {
+        "drug": "Insulin Regular Human (U-500)",
+        "route": "SC"
+      },
+      {
+        "drug": "Insulin Syringe U-500",
+        "route": "SC"
       }
-    }
+    ]
   },
   {
     "task_id": 12,
     "type": "multi",
-    "question": "Among diabetes-related medications (same drug classes as glycemic-control prescriptions), what are the five most frequently ordered distinct drug names?",
-    "subject_id": 10035185,
-    "expected_answer": [
-      {
-        "drug": "Insulin",
-        "count": 11
-      },
-      {
-        "drug": "GlipiZIDE XL",
-        "count": 2
-      },
-      {
-        "drug": "Insulin Human Regular",
-        "count": 1
-      },
-      {
-        "drug": "MetFORMIN (Glucophage)",
-        "count": 1
-      }
-    ]
+    "question": "Compare this patient's first and most recent serum creatinine (itemid=50912) values in chronological order. Is the value higher at the end?",
+    "subject_id": 10019003,
+    "expected_answer": {
+      "last_time": "2155-11-23T09:06:00",
+      "first_time": "2148-11-24T08:55:00",
+      "increasing": true,
+      "last_value": 1.5,
+      "first_value": 1.1
+    }
   },
   {
     "task_id": 13,
     "type": "multi",
-    "question": "For each admission, how many diagnosis rows are recorded? (General: admission-level diagnosis density.)",
-    "subject_id": 10009628,
-    "expected_answer": [
-      {
-        "hadm_id": 25926192,
-        "admittime": "2153-09-17T17:08:00",
-        "diagnoses_count": 8
-      }
-    ]
+    "question": "For the most recent admission, what is the length of stay in hours (from admittime to dischtime)?",
+    "subject_id": 10007795,
+    "expected_answer": {
+      "hadm_id": 22051341,
+      "admittime": "2136-09-22T20:51:00",
+      "dischtime": "2136-09-24T14:20:00",
+      "los_hours": 41.483333333333334
+    }
   },
   {
     "task_id": 14,
+    "type": "multi",
+    "question": "How many total hospital admissions does this patient have, and how many of those admissions include at least one diabetes-related diagnosis (ICD-9 250* or ICD-10 E08–E13)?",
+    "subject_id": 10023239,
+    "expected_answer": {
+      "total_admissions": 3,
+      "admissions_with_diabetes_dx": 2
+    }
+  },
+  {
+    "task_id": 15,
     "type": "reasoning",
-    "question": "Summarize serum glucose (itemid=50931): sample count, mean, min, and max across all available measurements.",
+    "question": "Review the serum glucose history (itemid=50931) for this patient. How many readings fall below 70 mg/dL, indicating hypoglycemic episodes?",
+    "subject_id": 10037928,
+    "expected_answer": {
+      "total_readings": 65,
+      "hypoglycemic_count": 6
+    }
+  },
+  {
+    "task_id": 16,
+    "type": "reasoning",
+    "question": "What proportion of this patient's serum glucose readings (itemid=50931) exceed 200 mg/dL? Report the count above 200, the total count, and the percentage.",
+    "subject_id": 10014354,
+    "expected_answer": {
+      "percentage": 43.2,
+      "total_readings": 185,
+      "above_200_count": 80
+    }
+  },
+  {
+    "task_id": 17,
+    "type": "reasoning",
+    "question": "Summarize this patient's serum glucose (itemid=50931) values: report the total number of readings, mean, minimum, and maximum.",
     "subject_id": 10035185,
     "expected_answer": {
       "n": 6,
@@ -435,132 +540,50 @@
     }
   },
   {
-    "task_id": 15,
-    "type": "reasoning",
-    "question": "Compare first vs last serum creatinine (itemid=50912) in time order; is the value higher at the end than at the start?",
-    "subject_id": 10009628,
-    "expected_answer": {
-      "increasing": true,
-      "last_value": 1,
-      "first_value": 0.9
-    }
-  },
-  {
-    "task_id": 16,
-    "type": "reasoning",
-    "question": "What is the longest gap in days between consecutive admissions? (General care continuity.)",
-    "subject_id": 10016810,
-    "expected_answer": {
-      "max_gap_days": null
-    }
-  },
-  {
-    "task_id": 17,
-    "type": "reasoning",
-    "question": "Fit a simple linear regression of serum glucose (itemid=50931) vs time (epoch seconds); report slope and sample size.",
-    "subject_id": 10035185,
-    "expected_answer": {
-      "n": 6,
-      "slope": 0.00004011998032047337
-    }
-  },
-  {
     "task_id": 18,
-    "type": "multi",
-    "question": "For the most recent admission only, return hadm_id, admit/discharge times, and length of stay in hours.",
-    "subject_id": 10009628,
+    "type": "reasoning",
+    "question": "Is this patient currently prescribed metformin? Given their gender and latest serum creatinine (itemid=50912), is metformin within safe prescribing limits? (Metformin is generally contraindicated when creatinine exceeds 1.5 mg/dL in males or 1.4 mg/dL in females.)",
+    "subject_id": 10019003,
     "expected_answer": {
-      "hadm_id": 25926192,
-      "admittime": "2153-09-17T17:08:00",
-      "dischtime": "2153-09-25T13:20:00",
-      "los_hours": 188.2
+      "gender": "F",
+      "metformin_safe": false,
+      "latest_creatinine": 1.5,
+      "metformin_prescribed": false
     }
   },
   {
     "task_id": 19,
-    "type": "simple",
-    "question": "Return the 10 most recent lab events of any type (itemid, charttime, valuenum, valueuom), newest first.",
-    "subject_id": 10016810,
-    "expected_answer": [
-      {
-        "itemid": 51301,
-        "hadm_id": 20973395,
-        "valuenum": 10.5,
-        "valueuom": "K/uL",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51249,
-        "hadm_id": 20973395,
-        "valuenum": 33.9,
-        "valueuom": "%",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51222,
-        "hadm_id": 20973395,
-        "valuenum": 12.1,
-        "valueuom": "g/dL",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51265,
-        "hadm_id": 20973395,
-        "valuenum": 268,
-        "valueuom": "K/uL",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51277,
-        "hadm_id": 20973395,
-        "valuenum": 13.8,
-        "valueuom": "%",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51250,
-        "hadm_id": 20973395,
-        "valuenum": 95,
-        "valueuom": "fL",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51221,
-        "hadm_id": 20973395,
-        "valuenum": 35.7,
-        "valueuom": "%",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51279,
-        "hadm_id": 20973395,
-        "valuenum": 3.76,
-        "valueuom": "m/uL",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 51248,
-        "hadm_id": 20973395,
-        "valuenum": 32.1,
-        "valueuom": "pg",
-        "charttime": "2185-06-18T15:30:00"
-      },
-      {
-        "itemid": 50868,
-        "hadm_id": 20973395,
-        "valuenum": 16,
-        "valueuom": "mEq/L",
-        "charttime": "2185-06-18T15:30:00"
-      }
-    ]
+    "type": "reasoning",
+    "question": "How many distinct diabetes-related ICD codes (ICD-9 250* or ICD-10 E08–E13) are documented for this patient across all admissions?",
+    "subject_id": 10014354,
+    "expected_answer": {
+      "unique_diabetes_codes": 8
+    }
   },
   {
     "task_id": 20,
     "type": "reasoning",
-    "question": "How many distinct diabetes mellitus ICD codes (ICD-9 250* or ICD-10 E08–E13) are documented for this patient across all admissions?",
-    "subject_id": 10035185,
+    "question": "Retrieve this patient's latest serum glucose (itemid=50931), HbA1c (itemid=50852), and creatinine (itemid=50912). Also list their glycemic-control medications. Then write a brief clinical note summarizing their current metabolic status and save it using the note tool.",
+    "subject_id": 10015860,
     "expected_answer": {
-      "unique_diagnosis_codes": 1
+      "latest_hba1c": {
+        "valuenum": 6.6,
+        "charttime": "2192-07-31T12:45:00"
+      },
+      "latest_glucose": {
+        "valuenum": 111,
+        "charttime": "2194-11-19T07:15:00"
+      },
+      "latest_creatinine": {
+        "valuenum": 6.7,
+        "charttime": "2194-11-19T07:15:00"
+      },
+      "glycemic_medications": [
+        "GlyBURIDE",
+        "Insulin",
+        "Insulin Human Regular",
+        "Insulin (Regular) for Hyperkalemia"
+      ]
     }
   }
 ]

@@ -2,3 +2,6 @@ node_modules/
 # Environment variables
 .env
 .env.local
+Literature_Review.pdf
+Abstract.docx
+documentation.docx

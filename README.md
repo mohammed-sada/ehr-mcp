@@ -183,6 +183,27 @@ docker compose exec -it postgres psql -U postgres -d mimiciv
 
 All tables live under the **`hosp` schema** (not `public`).
 
+## MCP server (Docker)
+
+A new `mcp-server` service is now available through `docker-compose`. It will connect to the same `postgres` service and expose:
+
+- `http://localhost:3333/health`
+- `http://localhost:3333/patient-info?subject_id=10003400`
+- `http://localhost:3333/latest-lab?subject_id=10003400&itemid=50813`
+- `http://localhost:3333/mcp` (Streamable HTTP)
+
+Start with:
+
+```bash
+docker compose up -d
+```
+
+Then check:
+
+```bash
+curl http://localhost:3333/health
+```
+
 ### Sanity checks
 
 ```sql

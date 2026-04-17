@@ -1,13 +1,15 @@
 import * as readline from "node:readline";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import * as http from "node:http";
 import { fileURLToPath } from "node:url";
+
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-// ─── Load .env (package root: mcp-server/.env, not mcp-server/src/.env) ────────
+// ─── Load .env ───────────────────────────────────────────────────────────────
 const envFile = [path.join(__dirname, "..", ".env"), path.join(__dirname, ".env")].find((p) =>
   fs.existsSync(p)
 );
@@ -15,69 +17,64 @@ if (!envFile) {
   console.error("ERROR: .env not found (tried mcp-server/.env and mcp-server/src/.env)");
   process.exit(1);
 }
-const env: Record<string, string> = {};
+const envVars: Record<string, string> = {};
 for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
   const t = line.trim();
   if (!t || t.startsWith("#")) continue;
   const i = t.indexOf("=");
   if (i < 0) continue;
-  env[t.slice(0, i).trim()] = t.slice(i + 1).trim();
+  envVars[t.slice(0, i).trim()] = t.slice(i + 1).trim();
 }
-const API_KEY = env["OPENROUTER_API_KEY"] ?? "";
-const MODEL   = env["OPENROUTER_MODEL"]   ?? "meta-llama/llama-3.3-70b-instruct:free";
-const PORT    = Number(env["PORT"] ?? "3333");
+const API_KEY = envVars["OPENROUTER_API_KEY"] ?? "";
+const MODEL   = envVars["OPENROUTER_MODEL"]   ?? "meta-llama/llama-3.3-70b-instruct:free";
+const PORT    = Number(envVars["PORT"] ?? "3333");
 
 if (!API_KEY || API_KEY === "sk-or-...") {
   console.error("ERROR: OPENROUTER_API_KEY not set in .env"); process.exit(1);
 }
 
-// ─── Colours ──────────────────────────────────────────────────────────────────
+// ─── Colours ─────────────────────────────────────────────────────────────────
 const R="\x1b[0m",B="\x1b[1m",DIM="\x1b[2m",CY="\x1b[36m",GR="\x1b[32m",
       YE="\x1b[33m",BL="\x1b[34m",RE="\x1b[31m",GY="\x1b[90m";
 
-// ─── HTTP GET using Node.js http module ───────────────────────────────────────
-async function httpGet(routePath: string, params: Record<string, any> = {}): Promise<string> {
-  const qs = Object.entries(params).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join("&");
-  const fullPath = qs ? `${routePath}?${qs}` : routePath;
-  const url = `http://127.0.0.1:${PORT}${fullPath}`;
-  const res = await fetch(url);
-  return res.text();
+// ─── MCP Client (SDK) ───────────────────────────────────────────────────────
+let mcpClient: Client;
+let mcpTransport: StreamableHTTPClientTransport;
+
+interface ToolInfo {
+  name: string;
+  description: string;
+  inputSchema: Record<string, unknown>;
 }
 
-// ─── Parse plain JSON response (from /api/* direct routes) ──────────────────
-function parseSSE(raw: string): any {
-  if (!raw || raw.trim() === "") return null;
-  try { return JSON.parse(raw); } catch { return null; }
+let discoveredTools: ToolInfo[] = [];
+
+async function connectMcp(): Promise<void> {
+  const url = new URL(`http://127.0.0.1:${PORT}/mcp`);
+  mcpTransport = new StreamableHTTPClientTransport(url);
+  mcpClient = new Client({ name: "ehr-chat-client", version: "0.1.0" });
+  await mcpClient.connect(mcpTransport);
+
+  const { tools } = await mcpClient.listTools();
+  discoveredTools = tools.map((t) => ({
+    name: t.name,
+    description: t.description ?? "",
+    inputSchema: t.inputSchema,
+  }));
 }
 
-// ─── Tool definitions ─────────────────────────────────────────────────────────
-const TOOLS = [
-  { name: "patient_info", route: "/api/patient-info", params: ["subject_id"],          desc: "Get patient demographics and admission history" },
-  { name: "latest_lab",   route: "/api/latest-lab",   params: ["subject_id","itemid"], desc: "Get the most recent lab result for a patient" },
-  { name: "lab_history",  route: "/api/lab-history",  params: ["subject_id","itemid"], desc: "Get full lab history for a patient" },
-  { name: "diagnoses",    route: "/api/diagnoses",     params: ["subject_id"],          desc: "Get all ICD diagnoses for a patient" },
-  { name: "medications",  route: "/api/medications",   params: ["subject_id"],          desc: "Get medication and prescription history" },
-];
+async function callMcpTool(name: string, args: Record<string, unknown>): Promise<unknown> {
+  const result = await mcpClient.callTool({ name, arguments: args });
 
-const LAB_ITEMS: Record<string, number> = {
-  creatinine: 50912, lactate: 50813, wbc: 51301, hemoglobin: 51222,
-  sodium: 50983, potassium: 50971, glucose: 50931, bilirubin: 50885,
-};
+  if (!("content" in result)) return result;
 
-async function callTool(name: string, args: Record<string, any>): Promise<any> {
-  const tool = TOOLS.find(t => t.name === name);
-  if (!tool) return { error: `Unknown tool: ${name}` };
-  if (name === "medications" && !args.limit) args.limit = 20;
-  const raw = await httpGet(tool.route, args);
-
-  // ── DEBUG: print raw response for every tool call ──────────────────────────
-  console.log(`\nRAW [${name}]: ${JSON.stringify(raw.slice(0, 600))}`);
-
-  const result = parseSSE(raw);
-  return result;
+  const textItem = (result.content as Array<{ type: string; text?: string }>)
+    .find((c) => c.type === "text");
+  if (!textItem?.text) return null;
+  try { return JSON.parse(textItem.text); } catch { return { raw: textItem.text }; }
 }
 
-// ─── OpenRouter LLM ───────────────────────────────────────────────────────────
+// ─── OpenRouter LLM ─────────────────────────────────────────────────────────
 async function llm(prompt: string, temperature = 0): Promise<string> {
   const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
@@ -89,16 +86,24 @@ async function llm(prompt: string, temperature = 0): Promise<string> {
   return data.choices?.[0]?.message?.content ?? "";
 }
 
-// ─── Answer a question ────────────────────────────────────────────────────────
+// ─── Answer a question ──────────────────────────────────────────────────────
+const LAB_ITEMS: Record<string, number> = {
+  creatinine: 50912, lactate: 50813, wbc: 51301, hemoglobin: 51222,
+  sodium: 50983, potassium: 50971, glucose: 50931, bilirubin: 50885,
+  hba1c: 50852,
+};
+
 async function answerQuestion(question: string, currentPatient: number | null): Promise<string> {
-  const toolList = TOOLS.map(t => `  ${t.name}(${t.params.join(", ")}): ${t.desc}`).join("\n");
+  const toolList = discoveredTools.map((t) =>
+    `  ${t.name}: ${t.description}`
+  ).join("\n");
   const labList  = Object.entries(LAB_ITEMS).map(([k,v]) => `  ${k} = ${v}`).join("\n");
   const patCtx   = currentPatient ? `Current patient subject_id = ${currentPatient}.` : "";
 
   const plan = await llm(
 `You are a tool selector for a hospital EHR system. ${patCtx}
 
-Available tools:
+Available tools (auto-discovered from MCP server):
 ${toolList}
 
 Common lab item IDs (use for itemid parameter):
@@ -107,9 +112,9 @@ ${labList}
 User question: "${question}"
 
 Respond with ONLY a JSON array of tool calls. Examples:
-[{"tool":"patient_info","args":{"subject_id":10000032}}]
-[{"tool":"latest_lab","args":{"subject_id":10000032,"itemid":50912}}]
-[{"tool":"medications","args":{"subject_id":10002428}}]
+[{"tool":"patient_info","args":{"subject_id":10035185}}]
+[{"tool":"latest_lab","args":{"subject_id":10035185,"itemid":50912}}]
+[{"tool":"add_patient_note","args":{"subject_id":10035185,"body":"DM2 on insulin; review labs."}}]
 
 Rules:
 - Use ONLY the exact tool names listed above
@@ -127,7 +132,7 @@ Rules:
   for (const tc of toolCalls) {
     process.stdout.write(`\n${GY}  → ${tc.tool}(${JSON.stringify(tc.args)})${R}`);
     try {
-      const data = await callTool(tc.tool, tc.args);
+      const data = await callMcpTool(tc.tool, tc.args);
       if (data === null || data === undefined) {
         process.stdout.write(`\n${YE}  ⚠ null response${R}`);
         continue;
@@ -151,14 +156,15 @@ Rules:
   return llm(prompt, 0.1);
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Main ───────────────────────────────────────────────────────────────────
 async function main() {
-  try { await httpGet("/health"); } catch {
-    console.error(`\nERROR: Cannot reach MCP server at 127.0.0.1:${PORT}`);
+  try { await connectMcp(); } catch {
+    console.error(`\nERROR: Cannot connect to MCP server at 127.0.0.1:${PORT}/mcp`);
     console.error("→ Start it first: npm run dev"); process.exit(1);
   }
 
-  console.log(`${GR}Connected!${R} ${DIM}Model: ${MODEL}${R}`);
+  console.log(`${GR}Connected via MCP protocol!${R} ${DIM}Model: ${MODEL}${R}`);
+  console.log(`${DIM}Discovered ${discoveredTools.length} tools: ${discoveredTools.map((t) => t.name).join(", ")}${R}`);
   console.log();
   console.log(`${B}${CY}╔══════════════════════════════════════════════╗${R}`);
   console.log(`${B}${CY}║     EHR-MCP Clinical Chat (MIMIC-IV)         ║${R}`);
@@ -170,6 +176,8 @@ async function main() {
   console.log(`${DIM}  What diagnoses does patient 10009628 have?${R}`);
   console.log(`${DIM}  What medications is patient 10016810 on?${R}`);
   console.log(`${DIM}  Show the latest creatinine for patient 10035185${R}`);
+  console.log(`${DIM}  How many distinct lab types does patient 10035185 have?${R}`);
+  console.log(`${DIM}  Add a note for patient 10035185: follow-up on A1c${R}`);
   console.log();
 
   let currentPatient: number | null = null;
@@ -180,8 +188,19 @@ async function main() {
     rl.question(`\n${pid}${B}You:${R} `, async (input) => {
       const q = input.trim();
       if (!q) { ask(); return; }
-      if (q === "exit" || q === "quit") { console.log(`\n${DIM}Goodbye!${R}`); rl.close(); process.exit(0); }
-      if (q === "tools") { TOOLS.forEach(t => console.log(`  ${CY}${t.name}${R}  ${DIM}${t.desc}${R}`)); ask(); return; }
+      if (q === "exit" || q === "quit") {
+        console.log(`\n${DIM}Goodbye!${R}`);
+        await mcpTransport.close();
+        rl.close();
+        process.exit(0);
+      }
+      if (q === "tools") {
+        discoveredTools.forEach((t) => {
+          console.log(`  ${CY}${t.name}${R}  ${DIM}${t.description}${R}`);
+        });
+        ask();
+        return;
+      }
       const pm = q.match(/^patient\s+(\d+)$/i);
       if (pm) { currentPatient = Number(pm[1]); console.log(`${GR}Patient set to ${currentPatient}${R}`); ask(); return; }
 

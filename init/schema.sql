@@ -110,3 +110,12 @@ CREATE TABLE IF NOT EXISTS hosp.d_icd_diagnoses (
   PRIMARY KEY (icd_code, icd_version)
 );
 
+-- AI / study: free-text notes attached to a patient (not part of MIMIC source CSVs).
+CREATE TABLE IF NOT EXISTS hosp.notes (
+  note_id     BIGSERIAL PRIMARY KEY,
+  subject_id  INTEGER NOT NULL REFERENCES hosp.patients (subject_id) ON DELETE CASCADE,
+  body        TEXT NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  source      TEXT NOT NULL DEFAULT 'mcp'
+);
+

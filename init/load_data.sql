@@ -20,6 +20,7 @@ SET maintenance_work_mem = '256MB';
 
 -- If this runs multiple times, reload deterministically.
 TRUNCATE TABLE
+  hosp.notes,
   hosp.patients,
   hosp.admissions,
   hosp.d_labitems,
