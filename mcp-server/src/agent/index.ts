@@ -40,11 +40,12 @@ async function main() {
   logger.info("╔══════════════════════════════════════════════════╗");
   logger.info("║     EHR-MCP Agent Evaluation (OpenRouter)        ║");
   logger.info("╚══════════════════════════════════════════════════╝");
-  logger.info(`Model : ${env.OPENROUTER_MODEL}`);
+  logger.info(`Agent model : ${env.OPENROUTER_MODEL}`);
+  logger.info(`Judge model : ${env.OPENROUTER_JUDGE_MODEL ?? env.OPENROUTER_MODEL}${env.OPENROUTER_JUDGE_MODEL ? "" : " (same as agent)"}`);
   if (taskFilter) {
-    logger.info(`Task  : #${taskFilter} only`);
+    logger.info(`Task        : #${taskFilter} only`);
   } else {
-    logger.info(`Tasks : all 20`);
+    logger.info(`Tasks       : all 20`);
   }
 
   const report = await runEvaluation(taskFilter);
@@ -53,17 +54,21 @@ async function main() {
   logger.info("\n╔══════════════════════════════════════════════════╗");
   logger.info("║                   RESULTS                       ║");
   logger.info("╚══════════════════════════════════════════════════╝");
-  logger.info(`Model    : ${report.model}`);
-  logger.info(`Correct  : ${report.summary.correct}/${report.summary.total}`);
-  logger.info(`Accuracy : ${(report.summary.accuracy * 100).toFixed(1)}%`);
-  logger.info(`Avg tools: ${report.summary.avgToolCalls.toFixed(1)} calls/task`);
+  logger.info(`Agent model  : ${report.model}`);
+  logger.info(`Judge model  : ${report.judge_model}`);
+  logger.info(`Correct      : ${report.summary.correct}/${report.summary.total}`);
+  logger.info(`Accuracy     : ${(report.summary.accuracy * 100).toFixed(1)}%`);
+  logger.info(`Mean score   : ${(report.summary.meanScore * 100).toFixed(1)}% (partial credit)`);
+  logger.info(`Avg tools    : ${report.summary.avgToolCalls.toFixed(1)} calls/task`);
 
   logger.info("\n── Accuracy by task type ──────────────────────────");
   for (const [type, s] of Object.entries(report.summary.byType)) {
     const pct = (s as any).accuracy;
+    const mean = (s as any).meanScore;
     const bar = "█".repeat(Math.round(pct * 20)).padEnd(20, "░");
     logger.info(
-      `  ${type.padEnd(10)} ${bar}  ${(s as any).correct}/${(s as any).total} (${(pct * 100).toFixed(0)}%)`
+      `  ${type.padEnd(10)} ${bar}  ${(s as any).correct}/${(s as any).total} ` +
+      `(acc ${(pct * 100).toFixed(0)}% | mean ${(mean * 100).toFixed(0)}%)`
     );
   }
 
@@ -78,6 +83,15 @@ async function main() {
     logger.info(
       `${String(t.task_id).padEnd(4)} ${t.type.padEnd(10)} ${result.padEnd(8)} ${toolStr} ${t.question.slice(0, 48)}`
     );
+  }
+
+  // ── Failed tasks with judge rationale ─────────────────────────────────────
+  const failed = report.tasks.filter((t) => !t.correct);
+  if (failed.length > 0) {
+    logger.info("\n── Failed tasks (judge rationale) ─────────────────");
+    for (const t of failed) {
+      logger.info(`  #${t.task_id} [${t.type}] score=${(t.score * 100).toFixed(0)}%: ${t.judge_rationale}`);
+    }
   }
 
   // ── Save JSON report ──────────────────────────────────────────────────────

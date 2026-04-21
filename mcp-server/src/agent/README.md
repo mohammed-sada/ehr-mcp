@@ -76,10 +76,13 @@ Each "step" is one think→tool→observe cycle. Complex tasks may need 2–3 st
 OPENROUTER_API_KEY=sk-or-...   # Get from https://openrouter.ai (free tier available)
 ```
 
-Optionally set the model (defaults to `meta-llama/llama-3.3-70b-instruct:free`):
+Optionally set the agent model and the judge model:
 
 ```env
-OPENROUTER_MODEL=meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL=openai/gpt-oss-120b:free
+# If unset, the same model is used as judge. For publication-grade results,
+# set a stronger / different-family judge to mitigate self-preference bias.
+OPENROUTER_JUDGE_MODEL=openai/gpt-4o-mini
 ```
 
 ### 2. Install dependencies
@@ -111,41 +114,63 @@ npm run eval -- --task 4  # single task (good for testing)
 
 ---
 
+## Scoring: LLM-as-Judge
+
+Every task is scored by an LLM judge rather than regex/substring matching.
+The judge receives the question, the SQL ground truth (as JSON), and the
+agent's free-text answer, and returns:
+
+```json
+{ "score": 0.85, "correct": true, "rationale": "Identifies all 20 admissions with correct hadm_id and timestamps; minor date-formatting difference only." }
+```
+
+- `score` is a continuous 0.0–1.0 value (partial credit for lists/sets).
+- `correct` is `true` iff `score >= 0.8` (configurable threshold).
+- `rationale` is a 1–2 sentence explanation surfaced in the console and saved
+  to the JSON report.
+- Judge calls use `temperature=0` for reproducibility.
+
+See `judge.ts` for the full judging prompt and parsing logic.
+
+---
+
 ## Output
 
 Results are saved to `src/agent/output/eval_report_<timestamp>.json`:
 
 ```json
 {
-  "model": "meta-llama/llama-3.3-70b-instruct:free",
-  "ran_at": "2026-04-14T...",
+  "model": "openai/gpt-oss-120b:free",
+  "judge_model": "openai/gpt-4o-mini",
+  "ran_at": "2026-04-20T...",
   "mcp_server_url": "http://localhost:3333/mcp",
   "summary": {
     "total": 20,
     "correct": 15,
     "accuracy": 0.75,
+    "meanScore": 0.82,
     "avgToolCalls": 1.8,
     "byType": {
-      "simple":    { "total": 7, "correct": 7, "accuracy": 1.00 },
-      "multi":     { "total": 7, "correct": 5, "accuracy": 0.71 },
-      "reasoning": { "total": 6, "correct": 3, "accuracy": 0.50 }
+      "simple":    { "total": 7, "correct": 7, "accuracy": 1.00, "meanScore": 0.95 },
+      "multi":     { "total": 7, "correct": 5, "accuracy": 0.71, "meanScore": 0.78 },
+      "reasoning": { "total": 6, "correct": 3, "accuracy": 0.50, "meanScore": 0.68 }
     }
   },
-  "tasks": [ ... per-task details ... ]
+  "tasks": [
+    {
+      "task_id": 1,
+      "score": 1.0,
+      "correct": true,
+      "judge_rationale": "Answer correctly identifies gender=M and anchor_age=70.",
+      "tools_called": ["patient_info"],
+      ...
+    }
+  ]
 }
 ```
 
-The console prints a live table:
-
-```
-#    Type       Result   Tools used                          Question
-─────────────────────────────────────────────────────────────────────
-1    simple     ✓ 100%   patient_info                        What is the patient's gender...
-8    multi      ✓ 100%   latest_lab→latest_lab→latest_lab    Retrieve the latest values...
-18   reasoning  ✗  60%   prescriptions→latest_lab            Is this patient currently...
-─────────────────────────────────────────────────────────────────────
-Correct: 15/20 | Accuracy: 75.0%
-```
+The console prints a live table plus a "Failed tasks (judge rationale)"
+section listing why each failure was marked wrong.
 
 ---
 
@@ -155,5 +180,5 @@ Correct: 15/20 | Accuracy: 75.0%
 |---|---|
 | `index.ts` | Entry point — parses CLI args, runs evaluation, prints results |
 | `runner.ts` | Core agent logic — MCP tool discovery, ReAct loop, task execution |
-| `scorer.ts` | Answer scoring — exact match, numeric tolerance, Dice coefficient for lists |
+| `judge.ts` | LLM-as-judge scorer — grades free-text answers vs SQL ground truth |
 | `output/` | Saved evaluation reports (timestamped JSON files) |

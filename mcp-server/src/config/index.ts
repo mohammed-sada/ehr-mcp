@@ -18,6 +18,7 @@ const EnvSchema = z.object({
 
   OPENROUTER_API_KEY: z.string().min(1),
   OPENROUTER_MODEL: z.string().min(1).default("openai/gpt-oss-120b:free"),
+  OPENROUTER_JUDGE_MODEL: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

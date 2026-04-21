@@ -27,7 +27,7 @@ import { tasks } from "../evaluation/tasks.js";
 import { logger } from "../utils/logger.js";
 import { env } from "../config/index.js";
 import type { GroundTruthRow } from "../evaluation/types.js";
-import { scoreAnswer } from "./scorer.js";
+import { judgeAnswer } from "./judge.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -42,6 +42,7 @@ export interface TaskResult {
   expected_answer: unknown;
   correct: boolean;
   score: number;
+  judge_rationale: string;
   tools_called: string[];
   tool_call_count: number;
   error?: string;
@@ -50,6 +51,7 @@ export interface TaskResult {
 
 export interface EvalReport {
   model: string;
+  judge_model: string;
   ran_at: string;
   mcp_server_url: string;
   tasks: TaskResult[];
@@ -57,8 +59,9 @@ export interface EvalReport {
     total: number;
     correct: number;
     accuracy: number;
+    meanScore: number;
     avgToolCalls: number;
-    byType: Record<string, { total: number; correct: number; accuracy: number }>;
+    byType: Record<string, { total: number; correct: number; accuracy: number; meanScore: number }>;
   };
 }
 
@@ -115,6 +118,7 @@ async function runTask(
   task: (typeof tasks)[0],
   mcpTools: Record<string, ReturnType<typeof tool>>,
   model: any,
+  judgeModel: any,
   groundTruth: GroundTruthRow
 ): Promise<TaskResult> {
   const start = Date.now();
@@ -153,11 +157,12 @@ Please use the available tools to retrieve the data and answer the question dire
       },
     });
 
-    const { correct, score } = scoreAnswer(
-      result.text,
-      groundTruth.expected_answer,
-      task.type
-    );
+    const verdict = await judgeAnswer({
+      question: task.question,
+      expectedAnswer: groundTruth.expected_answer,
+      llmAnswer: result.text,
+      model: judgeModel,
+    });
 
     return {
       task_id: task.id,
@@ -166,8 +171,9 @@ Please use the available tools to retrieve the data and answer the question dire
       subject_id: task.subject_id,
       llm_answer: result.text,
       expected_answer: groundTruth.expected_answer,
-      correct,
-      score,
+      correct: verdict.correct,
+      score: verdict.score,
+      judge_rationale: verdict.rationale,
       tools_called: toolsCalled,
       tool_call_count: toolsCalled.length,
       duration_ms: Date.now() - start,
@@ -184,6 +190,7 @@ Please use the available tools to retrieve the data and answer the question dire
       expected_answer: groundTruth.expected_answer,
       correct: false,
       score: 0,
+      judge_rationale: "Task execution failed before judging.",
       tools_called: toolsCalled,
       tool_call_count: toolsCalled.length,
       error: errMsg,
@@ -206,16 +213,19 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
 
   const mcpUrl = `http://localhost:${env.PORT}/mcp`;
   const modelId = env.OPENROUTER_MODEL;
+  const judgeModelId = env.OPENROUTER_JUDGE_MODEL ?? modelId;
 
   const openrouter = createOpenAI({
     apiKey: env.OPENROUTER_API_KEY,
     baseURL: "https://openrouter.ai/api/v1",
   });
   const model = openrouter(modelId);
+  const judgeModel = judgeModelId === modelId ? model : openrouter(judgeModelId);
 
-  logger.info(`Model  : ${modelId}`);
-  logger.info(`Via    : OpenRouter (https://openrouter.ai)`);
-  logger.info(`Server : ${mcpUrl}`);
+  logger.info(`Agent model : ${modelId}`);
+  logger.info(`Judge model : ${judgeModelId}${judgeModelId === modelId ? " (same as agent)" : ""}`);
+  logger.info(`Via         : OpenRouter (https://openrouter.ai)`);
+  logger.info(`Server      : ${mcpUrl}`);
 
   const gtPath = resolve(__dirname, "../evaluation/output/ground_truth.json");
   const groundTruth: GroundTruthRow[] = JSON.parse(await readFile(gtPath, "utf8"));
@@ -238,7 +248,7 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
     logger.info(`\n── Task ${task.id}/${tasksToRun.length} [${task.type.toUpperCase()}] ──`);
     logger.info(`   ${task.question}`);
 
-    const result = await runTask(task, mcp.tools, model, gt);
+    const result = await runTask(task, mcp.tools, model, judgeModel, gt);
     taskResults.push(result);
 
     const mark = result.correct ? "✓" : "✗";
@@ -247,6 +257,9 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
       `Tools: [${result.tools_called.join(" → ") || "none"}] | ` +
       `${result.duration_ms}ms`
     );
+    if (result.judge_rationale) {
+      logger.info(`  ⎿ Judge: ${result.judge_rationale.slice(0, 200)}`);
+    }
   }
 
   await mcp.transport.close();
@@ -254,26 +267,35 @@ export async function runEvaluation(taskFilter?: number): Promise<EvalReport> {
   // ── Build summary ──────────────────────────────────────────────────────────
   const total = taskResults.length;
   const correct = taskResults.filter((r) => r.correct).length;
+  const meanScore =
+    taskResults.reduce((s, r) => s + r.score, 0) / (total || 1);
   const avgToolCalls =
     taskResults.reduce((s, r) => s + r.tool_call_count, 0) / (total || 1);
 
-  const typeMap: Record<string, { total: number; correct: number }> = {};
+  const typeMap: Record<string, { total: number; correct: number; scoreSum: number }> = {};
   for (const r of taskResults) {
-    if (!typeMap[r.type]) typeMap[r.type] = { total: 0, correct: 0 };
+    if (!typeMap[r.type]) typeMap[r.type] = { total: 0, correct: 0, scoreSum: 0 };
     typeMap[r.type].total++;
+    typeMap[r.type].scoreSum += r.score;
     if (r.correct) typeMap[r.type].correct++;
   }
 
-  const byType: Record<string, { total: number; correct: number; accuracy: number }> = {};
+  const byType: Record<string, { total: number; correct: number; accuracy: number; meanScore: number }> = {};
   for (const [type, counts] of Object.entries(typeMap)) {
-    byType[type] = { ...counts, accuracy: counts.correct / counts.total };
+    byType[type] = {
+      total: counts.total,
+      correct: counts.correct,
+      accuracy: counts.correct / counts.total,
+      meanScore: counts.scoreSum / counts.total,
+    };
   }
 
   return {
     model: modelId,
+    judge_model: judgeModelId,
     ran_at: new Date().toISOString(),
     mcp_server_url: mcpUrl,
     tasks: taskResults,
-    summary: { total, correct, accuracy: correct / (total || 1), avgToolCalls, byType },
+    summary: { total, correct, accuracy: correct / (total || 1), meanScore, avgToolCalls, byType },
   };
 }
