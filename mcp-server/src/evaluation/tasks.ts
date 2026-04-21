@@ -12,8 +12,7 @@ const S = {
   P4: 10019003, // F 65,  8 admissions, rich lab/med data
   P5: 10023239, // F 29,  3 admissions, Type 1 DM with DKA, HbA1c 8.3–10.9
   P6: 10035185, // M 70,  1 admission,  HbA1c 7.7
-  P7: 10007795, // F 53,  5 admissions, multiple diabetes complications
-  P8: 10009628  // M 58,  1 admission,  simpler case
+  P7: 10007795  // F 53,  5 admissions, multiple diabetes complications
 } as const;
 
 /** MIMIC-IV lab item IDs relevant to diabetes care. */
@@ -22,31 +21,22 @@ const HBA1C_ITEMID = 50852;
 const CREATININE_ITEMID = 50912;
 const POTASSIUM_ITEMID = 50971;
 
+/**
+ * 10-task benchmark (subset of an earlier 20-task draft).
+ * Original task IDs are preserved so historical reports remain traceable.
+ * Selection criteria:
+ *   1) each task exercises a distinct skill / tool-composition pattern
+ *   2) collectively covers 6 of 7 MCP tools
+ *   3) spans simple retrieval, multi-step composition, and clinical reasoning
+ */
 export const tasks: EvalTask[] = [
-  // ──────────────────────────────────────────────────────────
-  // SIMPLE  (7 tasks) – single MCP tool call expected
-  // ──────────────────────────────────────────────────────────
+  // ─── SIMPLE (3) — single-tool retrieval ──────────────────────────
   {
     id: 1,
     type: "simple",
     subject_id: S.P6,
     question:
       "What is this patient's gender and anchor age?"
-  },
-  {
-    id: 2,
-    type: "simple",
-    subject_id: S.P1,
-    question:
-      "List all hospital admissions for this patient (hadm_id, admittime, dischtime) ordered by admittime."
-  },
-  {
-    id: 3,
-    type: "simple",
-    subject_id: S.P8,
-    question:
-      "What is the most recent serum glucose (itemid=50931) value and when was it recorded?",
-    params: { itemid: GLUCOSE_ITEMID }
   },
   {
     id: 4,
@@ -57,21 +47,6 @@ export const tasks: EvalTask[] = [
     params: { itemid: HBA1C_ITEMID }
   },
   {
-    id: 5,
-    type: "simple",
-    subject_id: S.P3,
-    question:
-      "What is the latest serum creatinine (itemid=50912) for this patient?",
-    params: { itemid: CREATININE_ITEMID }
-  },
-  {
-    id: 6,
-    type: "simple",
-    subject_id: S.P7,
-    question:
-      "List all diabetes-related ICD diagnoses (ICD-9 250* or ICD-10 E08–E13) documented for this patient, with ICD code and long title."
-  },
-  {
     id: 7,
     type: "simple",
     subject_id: S.P5,
@@ -80,9 +55,7 @@ export const tasks: EvalTask[] = [
     params: { limit: 200 }
   },
 
-  // ──────────────────────────────────────────────────────────
-  // MULTI-STEP  (7 tasks) – 2+ tool calls expected
-  // ──────────────────────────────────────────────────────────
+  // ─── MULTI-STEP (4) — 2+ tool calls ──────────────────────────────
   {
     id: 8,
     type: "multi",
@@ -102,33 +75,12 @@ export const tasks: EvalTask[] = [
     params: { itemid: GLUCOSE_ITEMID }
   },
   {
-    id: 10,
-    type: "multi",
-    subject_id: S.P3,
-    question:
-      "Does this patient have documented diagnoses for any of the following diabetes comorbidities: chronic kidney disease, hypertension, or cardiovascular/heart disease? List which ones are present."
-  },
-  {
-    id: 11,
-    type: "multi",
-    subject_id: S.P1,
-    question:
-      "What distinct insulin formulations (drug names) and routes of administration have been used for this patient?"
-  },
-  {
     id: 12,
     type: "multi",
     subject_id: S.P4,
     question:
       "Compare this patient's first and most recent serum creatinine (itemid=50912) values in chronological order. Is the value higher at the end?",
     params: { itemid: CREATININE_ITEMID }
-  },
-  {
-    id: 13,
-    type: "multi",
-    subject_id: S.P7,
-    question:
-      "For the most recent admission, what is the length of stay in hours (from admittime to dischtime)?"
   },
   {
     id: 14,
@@ -138,17 +90,7 @@ export const tasks: EvalTask[] = [
       "How many total hospital admissions does this patient have, and how many of those admissions include at least one diabetes-related diagnosis (ICD-9 250* or ICD-10 E08–E13)?"
   },
 
-  // ──────────────────────────────────────────────────────────
-  // REASONING  (6 tasks) – multi-step + clinical logic
-  // ──────────────────────────────────────────────────────────
-  {
-    id: 15,
-    type: "reasoning",
-    subject_id: S.P2,
-    question:
-      "Review the serum glucose history (itemid=50931) for this patient. How many readings fall below 70 mg/dL, indicating hypoglycemic episodes?",
-    params: { itemid: GLUCOSE_ITEMID }
-  },
+  // ─── REASONING (3) — multi-step + clinical logic ─────────────────
   {
     id: 16,
     type: "reasoning",
@@ -158,27 +100,12 @@ export const tasks: EvalTask[] = [
     params: { itemid: GLUCOSE_ITEMID }
   },
   {
-    id: 17,
-    type: "reasoning",
-    subject_id: S.P6,
-    question:
-      "Summarize this patient's serum glucose (itemid=50931) values: report the total number of readings, mean, minimum, and maximum.",
-    params: { itemid: GLUCOSE_ITEMID }
-  },
-  {
     id: 18,
     type: "reasoning",
     subject_id: S.P4,
     question:
       "Is this patient currently prescribed metformin? Given their gender and latest serum creatinine (itemid=50912), is metformin within safe prescribing limits? (Metformin is generally contraindicated when creatinine exceeds 1.5 mg/dL in males or 1.4 mg/dL in females.)",
     params: { itemid: CREATININE_ITEMID }
-  },
-  {
-    id: 19,
-    type: "reasoning",
-    subject_id: S.P1,
-    question:
-      "How many distinct diabetes-related ICD codes (ICD-9 250* or ICD-10 E08–E13) are documented for this patient across all admissions?"
   },
   {
     id: 20,

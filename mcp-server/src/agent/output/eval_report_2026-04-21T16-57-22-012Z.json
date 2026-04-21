@@ -1,0 +1,1065 @@
+{
+  "model": "openai/gpt-oss-120b:free",
+  "judge_model": "openai/gpt-oss-120b:free",
+  "ran_at": "2026-04-21T16:57:21.979Z",
+  "mcp_server_url": "http://localhost:3333/mcp",
+  "repeats": 5,
+  "tasks": [
+    {
+      "task_id": 1,
+      "type": "simple",
+      "question": "What is this patient's gender and anchor age?",
+      "subject_id": 10035185,
+      "expected_answer": {
+        "patient": {
+          "gender": "M",
+          "anchor_age": 70,
+          "subject_id": 10035185
+        }
+      },
+      "n_trials": 5,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 9959.6,
+      "avg_tool_calls": 1,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient is male, and his anchor age is 70 years old.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer correctly states the patient is male (M) and the anchor age is 70, matching all ground truth facts.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8492
+        },
+        {
+          "trial": 2,
+          "llm_answer": "The patient is male and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the patient as male (M) and the anchor age as 70, matching all ground truth facts.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 9182
+        },
+        {
+          "trial": 3,
+          "llm_answer": "The patient is male and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer correctly states the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 12769
+        },
+        {
+          "trial": 4,
+          "llm_answer": "The patient is male and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 7500
+        },
+        {
+          "trial": 5,
+          "llm_answer": "The patient is male, and his anchor age is 70 years old.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 11855
+        }
+      ]
+    },
+    {
+      "task_id": 4,
+      "type": "simple",
+      "question": "What is this patient's latest Hemoglobin A1c (HbA1c, itemid=50852) result?",
+      "subject_id": 10037928,
+      "expected_answer": {
+        "latest_lab": {
+          "label": "% Hemoglobin A1c",
+          "itemid": 50852,
+          "hadm_id": null,
+          "valuenum": 10.8,
+          "valueuom": "%",
+          "charttime": "2184-07-18T15:41:00",
+          "subject_id": 10037928
+        }
+      },
+      "n_trials": 5,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 10668.6,
+      "avg_tool_calls": 1,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c result is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reported the latest HbA1c value of 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8955
+        },
+        {
+          "trial": 2,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c result is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reports the latest HbA1c value as 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 14105
+        },
+        {
+          "trial": 3,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c value is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reports the latest HbA1c value as 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 7061
+        },
+        {
+          "trial": 4,
+          "llm_answer": "The latest Hemoglobin A1c (itemid 50852) for patient **10037928** is **10.8 %** (recorded on 2184‑07‑18 15:41).",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM provided the exact Hemoglobin A1c value, unit, itemid, patient ID, and timestamp as in the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 9907
+        },
+        {
+          "trial": 5,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c result is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reports the latest HbA1c value of 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 13315
+        }
+      ]
+    },
+    {
+      "task_id": 7,
+      "type": "simple",
+      "question": "List all glycemic-control medications (insulin, metformin, sulfonylureas, DPP-4i, GLP-1 RA, SGLT2i, TZDs) prescribed for this patient, with drug name, route, and start/stop times.",
+      "subject_id": 10023239,
+      "expected_answer": [
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-19T19:00:00",
+          "starttime": "2137-06-19T20:00:00"
+        },
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-20T10:00:00",
+          "starttime": "2137-06-19T21:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T06:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T11:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T14:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T18:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T19:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T21:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T02:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T11:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-22T19:00:00",
+          "starttime": "2137-06-21T17:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T22:00:00"
+        },
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-04T14:00:00",
+          "starttime": "2140-10-03T12:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-06T16:00:00",
+          "starttime": "2140-10-04T14:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-08T19:00:00",
+          "starttime": "2140-10-06T17:00:00"
+        }
+      ],
+      "n_trials": 5,
+      "pass_rate": 0.4,
+      "score_mean": 0.662,
+      "score_std": 0.4101463153558739,
+      "score_ci_low": 0.32,
+      "score_ci_high": 0.942,
+      "avg_duration_ms": 35924.4,
+      "avg_tool_calls": 1,
+      "score": 0.662,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Glycemic‑control medications for subject 10023239**\n\n| Drug (generic) | Form / Route | Start time | Stop time |\n|----------------|--------------|------------|-----------|\n| Insulin Human Regular | IV drip | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular | IV drip | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified) | Sub‑cutaneous (SC) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular | IV drip | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All glycemic‑control medications recorded for this patient are insulin preparations (regular insulin, unspecified insulin, and insulin pump therapy).  \n* No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 receptor agonists, SGLT2 inhibitors, or thiazolidinediones) were found in the medication list.  \n\nThese entries represent the complete set of glycemic‑control prescriptions returned by the database for subject 10023239.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer lists every insulin medication with correct drug names, routes, and start/stop times matching the ground truth and correctly notes the absence of oral agents.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 44538
+        },
+        {
+          "trial": 2,
+          "llm_answer": "**Glycemic‑control medications prescribed for subject 10023239**\n\n| Drug (generic class) | Route | Start time | Stop time |\n|----------------------|-------|------------|-----------|\n| Insulin Human Regular | IV drip | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular | IV drip | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified formulation) | SC (sub‑cut) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular | IV drip | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n*No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, TZDs) were found for this patient in the medication list.*",
+          "correct": false,
+          "score": 0.71,
+          "judge_rationale": "The answer lists many insulin entries but omits several duplicate records present in the ground truth, resulting in fewer items than expected (≈20 of ≈28), so it does not meet the correctness threshold.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 32694
+        },
+        {
+          "trial": 3,
+          "llm_answer": "**Glycemic‑control medications for subject ID 10023239**\n\n| Drug (class) | Route | Start time | Stop time |\n|--------------|-------|------------|-----------|\n| Insulin Human Regular (regular insulin) | IV drip | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular (regular insulin) | IV drip | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified formulation) | Sub‑cutaneous (SC) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administering medication) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular (regular insulin) | IV drip | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administering medication) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administering medication) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n*No oral hypoglycemic agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 receptor agonists, SGLT2 inhibitors, or TZDs) were found for this patient in the medication list.*",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "The answer omitted many insulin entries, swapped start/stop times for one record, and did not match the full list of 26 expected medication records.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 34623
+        },
+        {
+          "trial": 4,
+          "llm_answer": "**Glycemic‑control medications for subject 10023239**\n\n| Medication (class) | Drug name (as recorded) | Route | Start time | Stop time |\n|--------------------|-------------------------|-------|------------|-----------|\n| Insulin (regular) | Insulin Human Regular | IV drip | 2137‑06‑19 20:00 | 2137‑06‑19 19:00* |\n| Insulin (regular) | Insulin Human Regular | IV drip | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin (pump) | Insulin Pump (Self Administering Medication) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (basal/bolus) | Insulin | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin (regular) | Insulin Human Regular | IV drip | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin (pump) | Insulin Pump (Self Administering Medication) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin (pump) | Insulin Pump (Self Administering Medication) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n\\* The first record shows a stop time earlier than the start time; it likely reflects a data entry error, but it is included as returned.\n\n**Notes**\n\n* All glycemic agents recorded for this patient are insulin preparations (regular IV, subcutaneous injections, and insulin pump).  \n* No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, or TZDs) were found in the medication list.",
+          "correct": false,
+          "score": 0.6,
+          "judge_rationale": "The answer includes most distinct insulin entries but omits many duplicate records present in the ground truth and has some timing mismatches, so not all expected facts are covered.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 38906
+        },
+        {
+          "trial": 5,
+          "llm_answer": "**Glycemic‑control medications for subject 10023239**\n\n| Drug (generic/brand) | Route | Start time | Stop time |\n|----------------------|-------|------------|-----------|\n| Insulin Human Regular | IV DRIP | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular | IV DRIP | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular | IV DRIP | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All the entries returned by the “glycemic” prescription filter are insulin‑based therapies (regular insulin infusions, sub‑cutaneous insulin, and insulin‑pump therapy).  \n* No other glycemic‑control agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 receptor agonists, SGLT2 inhibitors, TZDs) were found for this patient in the medication records.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM list matches all ground‑truth medication entries with correct drug names, routes, and start/stop times, including all insulin records and correctly notes no other glycemic agents.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 28861
+        }
+      ]
+    },
+    {
+      "task_id": 8,
+      "type": "multi",
+      "question": "Retrieve the latest values for a diabetes lab panel: serum glucose (itemid=50931), HbA1c (itemid=50852), creatinine (itemid=50912), and potassium (itemid=50971).",
+      "subject_id": 10014354,
+      "expected_answer": {
+        "hba1c": {
+          "valuenum": 9.5,
+          "valueuom": "%",
+          "charttime": "2151-01-15T13:10:00"
+        },
+        "glucose": {
+          "valuenum": 279,
+          "valueuom": "mg/dL",
+          "charttime": "2150-10-08T12:10:00"
+        },
+        "potassium": {
+          "valuenum": 4,
+          "valueuom": "mEq/L",
+          "charttime": "2150-10-08T12:10:00"
+        },
+        "creatinine": {
+          "valuenum": 1.1,
+          "valueuom": "mg/dL",
+          "charttime": "2150-10-08T12:10:00"
+        }
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 12216.2,
+      "avg_tool_calls": 0.8,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Latest diabetes‑panel lab results for subject 10014354**\n\n| Lab | Item ID | Latest Value | Units | Date/Time |\n|-----|---------|--------------|-------|-----------|\n| Serum Glucose | 50931 | 279 | mg/dL | 2150‑10‑08 12:10 |\n| Hemoglobin A1c | 50852 | 9.5 | % | 2151‑01‑15 13:10 |\n| Creatinine | 50912 | 1.1 | mg/dL | 2150‑10‑08 12:10 |\n| Potassium | 50971 | 4 | mEq/L | 2150‑10‑08 12:10 |\n\nThese are the most recent values returned from the EHR for the specified item IDs.",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Judge call failed: Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day",
+          "tools_called": [
+            "latest_lab",
+            "latest_lab",
+            "latest_lab",
+            "latest_lab"
+          ],
+          "tool_call_count": 4,
+          "duration_ms": 25621
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8864,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8700,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8967,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8929,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        }
+      ]
+    },
+    {
+      "task_id": 9,
+      "type": "multi",
+      "question": "What are the highest and lowest serum glucose (itemid=50931) values ever recorded for this patient, and when did they occur?",
+      "subject_id": 10037928,
+      "expected_answer": {
+        "max_glucose": {
+          "valuenum": 996,
+          "charttime": "2177-07-14T15:15:00"
+        },
+        "min_glucose": {
+          "valuenum": 43,
+          "charttime": "2177-07-17T07:40:00"
+        }
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 8965.8,
+      "avg_tool_calls": 0,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8848,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 9720,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8343,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 9680,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8238,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        }
+      ]
+    },
+    {
+      "task_id": 12,
+      "type": "multi",
+      "question": "Compare this patient's first and most recent serum creatinine (itemid=50912) values in chronological order. Is the value higher at the end?",
+      "subject_id": 10019003,
+      "expected_answer": {
+        "last_time": "2155-11-23T09:06:00",
+        "first_time": "2148-11-24T08:55:00",
+        "increasing": true,
+        "last_value": 1.5,
+        "first_value": 1.1
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 8426.6,
+      "avg_tool_calls": 0,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8550,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8019,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 9488,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8223,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 7853,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        }
+      ]
+    },
+    {
+      "task_id": 14,
+      "type": "multi",
+      "question": "How many total hospital admissions does this patient have, and how many of those admissions include at least one diabetes-related diagnosis (ICD-9 250* or ICD-10 E08–E13)?",
+      "subject_id": 10023239,
+      "expected_answer": {
+        "total_admissions": 3,
+        "admissions_with_diabetes_dx": 2
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 8507.6,
+      "avg_tool_calls": 0,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8746,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8863,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8735,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8037,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8157,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        }
+      ]
+    },
+    {
+      "task_id": 16,
+      "type": "reasoning",
+      "question": "What proportion of this patient's serum glucose readings (itemid=50931) exceed 200 mg/dL? Report the count above 200, the total count, and the percentage.",
+      "subject_id": 10014354,
+      "expected_answer": {
+        "percentage": 43.2,
+        "total_readings": 185,
+        "above_200_count": 80
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 8363,
+      "avg_tool_calls": 0,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8511,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8531,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8190,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8351,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8232,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        }
+      ]
+    },
+    {
+      "task_id": 18,
+      "type": "reasoning",
+      "question": "Is this patient currently prescribed metformin? Given their gender and latest serum creatinine (itemid=50912), is metformin within safe prescribing limits? (Metformin is generally contraindicated when creatinine exceeds 1.5 mg/dL in males or 1.4 mg/dL in females.)",
+      "subject_id": 10019003,
+      "expected_answer": {
+        "gender": "F",
+        "metformin_safe": false,
+        "latest_creatinine": 1.5,
+        "metformin_prescribed": false
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 8845.4,
+      "avg_tool_calls": 0,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 9444,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 7928,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8779,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8878,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 9198,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        }
+      ]
+    },
+    {
+      "task_id": 20,
+      "type": "reasoning",
+      "question": "Retrieve this patient's latest serum glucose (itemid=50931), HbA1c (itemid=50852), and creatinine (itemid=50912). Also list their glycemic-control medications. Then write a brief clinical note summarizing their current metabolic status and save it using the note tool.",
+      "subject_id": 10015860,
+      "expected_answer": {
+        "latest_hba1c": {
+          "valuenum": 6.6,
+          "charttime": "2192-07-31T12:45:00"
+        },
+        "latest_glucose": {
+          "valuenum": 111,
+          "charttime": "2194-11-19T07:15:00"
+        },
+        "latest_creatinine": {
+          "valuenum": 6.7,
+          "charttime": "2194-11-19T07:15:00"
+        },
+        "glycemic_medications": [
+          "GlyBURIDE",
+          "Insulin",
+          "Insulin Human Regular",
+          "Insulin (Regular) for Hyperkalemia"
+        ]
+      },
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 8489,
+      "avg_tool_calls": 0,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8338,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 2,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8418,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 3,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 9072,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+        },
+        {
+          "trial": 4,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8326,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        },
+        {
+          "trial": 5,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 8291,
+          "error": "Failed after 3 attempts. Last error: Rate limit exceeded: free-models-per-min. "
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_tasks": 10,
+    "total_trials": 50,
+    "meanPassRate": 0.24,
+    "meanScore": 0.2662,
+    "avgToolCalls": 0.38,
+    "byType": {
+      "simple": {
+        "total_tasks": 3,
+        "meanPassRate": 0.7999999999999999,
+        "meanScore": 0.8873333333333333
+      },
+      "multi": {
+        "total_tasks": 4,
+        "meanPassRate": 0,
+        "meanScore": 0
+      },
+      "reasoning": {
+        "total_tasks": 3,
+        "meanPassRate": 0,
+        "meanScore": 0
+      }
+    }
+  }
+}

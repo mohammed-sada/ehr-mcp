@@ -1,0 +1,475 @@
+{
+  "model": "openai/gpt-oss-120b:free",
+  "judge_model": "openai/gpt-oss-120b:free",
+  "ran_at": "2026-04-21T17:11:53.528Z",
+  "mcp_server_url": "http://localhost:3333/mcp",
+  "repeats": 5,
+  "tasks": [
+    {
+      "task_id": 1,
+      "type": "simple",
+      "question": "What is this patient's gender and anchor age?",
+      "subject_id": 10035185,
+      "expected_answer": {
+        "patient": {
+          "gender": "M",
+          "anchor_age": 70,
+          "subject_id": 10035185
+        }
+      },
+      "n_trials": 5,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 8127.8,
+      "avg_tool_calls": 1,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient is male and his anchor age is 70 years old.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 9686
+        },
+        {
+          "trial": 2,
+          "llm_answer": "The patient is male and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8215
+        },
+        {
+          "trial": 3,
+          "llm_answer": "The patient is male and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "Both gender and anchor age match the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8044
+        },
+        {
+          "trial": 4,
+          "llm_answer": "The patient is male, and the anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer correctly states the patient is male and the anchor age is 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 6332
+        },
+        {
+          "trial": 5,
+          "llm_answer": "The patient (subject_id 10035185) is male and his anchor age is **70 years**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8362
+        }
+      ]
+    },
+    {
+      "task_id": 4,
+      "type": "simple",
+      "question": "What is this patient's latest Hemoglobin A1c (HbA1c, itemid=50852) result?",
+      "subject_id": 10037928,
+      "expected_answer": {
+        "latest_lab": {
+          "label": "% Hemoglobin A1c",
+          "itemid": 50852,
+          "hadm_id": null,
+          "valuenum": 10.8,
+          "valueuom": "%",
+          "charttime": "2184-07-18T15:41:00",
+          "subject_id": 10037928
+        }
+      },
+      "n_trials": 5,
+      "pass_rate": 0.8,
+      "score_mean": 0.8,
+      "score_std": 0.44721359549995804,
+      "score_ci_low": 0.4,
+      "score_ci_high": 1,
+      "avg_duration_ms": 9847,
+      "avg_tool_calls": 0.8,
+      "score": 0.8,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "Trial execution failed before judging.",
+          "tools_called": [],
+          "tool_call_count": 0,
+          "duration_ms": 5659,
+          "error": "Invalid arguments for tool latest_lab: JSON parsing failed: Text: {\n  \"itemid\": 50852,\n  \"subject_id\": 100379.\nError message: Expected ',' or '}' after property value in JSON at position 43"
+        },
+        {
+          "trial": 2,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c result is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly states the latest HbA1c value as 10.8%, matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 12238
+        },
+        {
+          "trial": 3,
+          "llm_answer": "The patient's most recent Hemoglobin A1c (itemid 50852) is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reported the latest HbA1c value of 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8955
+        },
+        {
+          "trial": 4,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c (itemid 50852) result is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reports the latest HbA1c value as 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 9097
+        },
+        {
+          "trial": 5,
+          "llm_answer": "The patient’s most recent Hemoglobin A1c result is **10.8 %** (itemid 50852).",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer correctly states the latest HbA1c value as 10.8% with the correct itemid, matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 13286
+        }
+      ]
+    },
+    {
+      "task_id": 7,
+      "type": "simple",
+      "question": "List all glycemic-control medications (insulin, metformin, sulfonylureas, DPP-4i, GLP-1 RA, SGLT2i, TZDs) prescribed for this patient, with drug name, route, and start/stop times.",
+      "subject_id": 10023239,
+      "expected_answer": [
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-19T19:00:00",
+          "starttime": "2137-06-19T20:00:00"
+        },
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-20T10:00:00",
+          "starttime": "2137-06-19T21:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T06:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T11:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T14:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T18:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T19:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T21:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T02:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T11:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-22T19:00:00",
+          "starttime": "2137-06-21T17:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T22:00:00"
+        },
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-04T14:00:00",
+          "starttime": "2140-10-03T12:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-06T16:00:00",
+          "starttime": "2140-10-04T14:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-08T19:00:00",
+          "starttime": "2140-10-06T17:00:00"
+        }
+      ],
+      "n_trials": 5,
+      "pass_rate": 0,
+      "score_mean": 0.384,
+      "score_std": 0.29031017894658806,
+      "score_ci_low": 0.16,
+      "score_ci_high": 0.592,
+      "avg_duration_ms": 33444,
+      "avg_tool_calls": 1,
+      "score": 0.384,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Glycemic‑control medications prescribed for subject 10023239**\n\n| Drug (class) | Route | Start time | Stop time |\n|--------------|-------|------------|-----------|\n| Insulin Human Regular (regular insulin) | IV DRIP | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular (regular insulin) | IV DRIP | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular (regular insulin) | IV DRIP | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All listed medications fall within the requested glycemic‑control classes (insulin, insulin pump).  \n* No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, TZDs) were returned for this patient in the medication query.  \n* Times are shown exactly as stored in the EHR (YYYY‑MM‑DD HH:MM).",
+          "correct": false,
+          "score": 0.4,
+          "judge_rationale": "The answer lists most distinct medication events but omits many duplicate rows present in the ground truth, so it does not include all expected items.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 22757
+        },
+        {
+          "trial": 2,
+          "llm_answer": "**Glycemic‑control medications prescribed for subject 10023239**\n\n| Drug (class) | Route | Start time | Stop time |\n|--------------|-------|------------|-----------|\n| Insulin Human Regular (regular‑insulin) | IV DRIP | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 *(note: stop time precedes start – likely a data entry error)* |\n| Insulin Human Regular (regular‑insulin) | IV DRIP | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified formulation) | SC (sub‑cutaneous) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administering medication) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 *(stop earlier than start – likely data entry error)* |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular | IV DRIP | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administering medication) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administering medication) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Key points**\n\n* The only glycemic‑control agents found for this patient are various forms of insulin (regular insulin, unspecified insulin, and insulin pump therapy).  \n* No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 receptor agonists, SGLT2 inhibitors, or TZDs) were returned by the medication query.  \n* Several records have stop times that precede the start time; these are likely documentation or entry errors.  \n\nThis list reflects all glycemic‑control prescriptions recorded for subject 10023239 in the database.",
+          "correct": false,
+          "score": 0.7,
+          "judge_rationale": "The answer lists most distinct insulin prescriptions but omits several duplicate records present in the ground truth, resulting in fewer entries than expected.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 37275
+        },
+        {
+          "trial": 3,
+          "llm_answer": "**Glycemic‑control medications prescribed for subject 10023239**\n\n| Drug (class) | Route | Start time | Stop time |\n|--------------|-------|------------|-----------|\n| Insulin Human Regular (regular insulin) | IV DRIP | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 (stop time earlier than start – likely a data entry error) |\n| Insulin Human Regular (regular insulin) | IV DRIP | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified formulation) | SC (sub‑cutaneous) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 (dose 20 U; repeated rows reflect multiple orders) |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 (dose 10 U) |\n| Insulin (unspecified formulation) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 (dose 10 U) |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 (dose 0 U) |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 (dose 15 U) |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 (dose 15 U) |\n| Insulin (unspecified formulation) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 (dose 15 U) |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin Human Regular (regular insulin) | IV DRIP | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All records returned by the EHR fall under the “glycemic” filter, so they represent insulin‑type therapies (regular insulin, unspecified insulin, and insulin pump therapy).  \n* No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, or TZDs) were present for this patient within the 200‑record limit.  \n* Several rows have identical start/stop times and doses; they likely correspond to separate order entries for the same regimen.  \n* The stop time for the first IV drip entry precedes its start time, indicating a possible documentation error; the medication is still listed for completeness.",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "The LLM omitted the majority of insulin entries present in the ground truth and did not reproduce all required records, so it failed to match the expected facts.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 28497
+        },
+        {
+          "trial": 4,
+          "llm_answer": "**Glycemic‑control medications for subject 10023239**\n\n| Drug (generic/brand) | Route | Start time | Stop time |\n|----------------------|-------|------------|-----------|\n| Insulin Human Regular | IV drip | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular | IV drip | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified) | SC (sub‑cut) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administering) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular | IV drip | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administering) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administering) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All entries are identified as “glycemic‑control” medications by the EHR’s prescription filter (insulin‑based therapies).  \n* No oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, TZDs) were present for this patient in the medication list.  \n* Times are recorded as they appear in the database; some stop times (e.g., 2137‑06‑19 19:00) precede the start time, reflecting data entry artifacts.",
+          "correct": false,
+          "score": 0.62,
+          "judge_rationale": "The answer lists many insulin entries but omits several duplicate records present in the ground truth, resulting in only about 20 of the ~32 expected rows being matched.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 42155
+        },
+        {
+          "trial": 5,
+          "llm_answer": "**Glycemic‑control medications for subject ID 10023239**\n\n| Drug (generic/brand) | Route | Start time | Stop time |\n|----------------------|-------|------------|-----------|\n| Insulin Human Regular | IV drip | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular | IV drip | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified) | SC (sub‑cutaneous) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular | IV drip | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All entries returned by the “glycemic” medication filter are insulin‑based; no oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, TZDs) were present for this patient.  \n* The “dose” column was omitted per the request; only drug name, route, and start/stop timestamps are shown.",
+          "correct": false,
+          "score": 0.2,
+          "judge_rationale": "The answer omits many duplicate insulin records, includes incorrect start/stop times (e.g., stop before start), and misrepresents several entries, so only a small fraction of the required facts match.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 36536
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_tasks": 10,
+    "total_trials": 50,
+    "meanPassRate": 0.18,
+    "meanScore": 0.2334,
+    "avgToolCalls": 0.38,
+    "byType": {
+      "simple": {
+        "total_tasks": 3,
+        "meanPassRate": 0.6,
+        "meanScore": 0.7280000000000001
+      },
+      "multi": {
+        "total_tasks": 4,
+        "meanPassRate": 0,
+        "meanScore": 0.0375
+      },
+      "reasoning": {
+        "total_tasks": 3,
+        "meanPassRate": 0,
+        "meanScore": 0
+      }
+    }
+  }
+}

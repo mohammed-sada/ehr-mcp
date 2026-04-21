@@ -1,0 +1,626 @@
+{
+  "model": "openai/gpt-oss-120b:free",
+  "judge_model": "openai/gpt-oss-120b:free",
+  "ran_at": "2026-04-21T16:43:24.549Z",
+  "mcp_server_url": "http://localhost:3333/mcp",
+  "repeats": 1,
+  "tasks": [
+    {
+      "task_id": 1,
+      "type": "simple",
+      "question": "What is this patient's gender and anchor age?",
+      "subject_id": 10035185,
+      "expected_answer": {
+        "patient": {
+          "gender": "M",
+          "anchor_age": 70,
+          "subject_id": 10035185
+        }
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 8811,
+      "avg_tool_calls": 1,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient is male, and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly identified the gender as male (M) and the anchor age as 70, matching the ground truth.",
+          "tools_called": [
+            "patient_info"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 8811
+        }
+      ]
+    },
+    {
+      "task_id": 4,
+      "type": "simple",
+      "question": "What is this patient's latest Hemoglobin A1c (HbA1c, itemid=50852) result?",
+      "subject_id": 10037928,
+      "expected_answer": {
+        "latest_lab": {
+          "label": "% Hemoglobin A1c",
+          "itemid": 50852,
+          "hadm_id": null,
+          "valuenum": 10.8,
+          "valueuom": "%",
+          "charttime": "2184-07-18T15:41:00",
+          "subject_id": 10037928
+        }
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 9172,
+      "avg_tool_calls": 1,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient's most recent Hemoglobin A1c (itemid 50852) result is **10.8 %**.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reports the latest HbA1c value of 10.8% matching the ground truth.",
+          "tools_called": [
+            "latest_lab"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 9172
+        }
+      ]
+    },
+    {
+      "task_id": 7,
+      "type": "simple",
+      "question": "List all glycemic-control medications (insulin, metformin, sulfonylureas, DPP-4i, GLP-1 RA, SGLT2i, TZDs) prescribed for this patient, with drug name, route, and start/stop times.",
+      "subject_id": 10023239,
+      "expected_answer": [
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-19T19:00:00",
+          "starttime": "2137-06-19T20:00:00"
+        },
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-20T10:00:00",
+          "starttime": "2137-06-19T21:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T06:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T11:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T14:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T18:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T19:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T21:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-20T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T02:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T08:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T11:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-22T19:00:00",
+          "starttime": "2137-06-21T17:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T10:00:00",
+          "starttime": "2137-06-21T22:00:00"
+        },
+        {
+          "drug": "Insulin",
+          "route": "SC",
+          "hadm_id": 29295881,
+          "stoptime": "2137-06-21T15:00:00",
+          "starttime": "2137-06-21T22:00:00"
+        },
+        {
+          "drug": "Insulin Human Regular",
+          "route": "IV DRIP",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-04T14:00:00",
+          "starttime": "2140-10-03T12:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-06T16:00:00",
+          "starttime": "2140-10-04T14:00:00"
+        },
+        {
+          "drug": "Insulin Pump (Self Administering Medication)",
+          "route": "SC",
+          "hadm_id": 21759936,
+          "stoptime": "2140-10-08T19:00:00",
+          "starttime": "2140-10-06T17:00:00"
+        }
+      ],
+      "n_trials": 1,
+      "pass_rate": 0,
+      "score_mean": 0.6,
+      "score_std": 0,
+      "score_ci_low": 0.6,
+      "score_ci_high": 0.6,
+      "avg_duration_ms": 44477,
+      "avg_tool_calls": 1,
+      "score": 0.6,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Glycemic‑control medications for subject 10023239**\n\n| Drug (generic/class) | Route | Start time | Stop time |\n|----------------------|-------|------------|-----------|\n| Insulin Human Regular (regular insulin) | IV DRIP | 2137‑06‑19 20:00 | 2137‑06‑19 19:00 |\n| Insulin Human Regular (regular insulin) | IV DRIP | 2137‑06‑19 21:00 | 2137‑06‑20 10:00 |\n| Insulin (unspecified) | SC (sub‑cutaneous) | 2137‑06‑20 06:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 11:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 14:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 18:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 19:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 21:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑20 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 02:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 08:00 | 2137‑06‑21 15:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 11:00 | 2137‑06‑21 15:00 |\n| Insulin Pump (self‑administered) | SC | 2137‑06‑21 17:00 | 2137‑06‑22 19:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 10:00 |\n| Insulin (unspecified) | SC | 2137‑06‑21 22:00 | 2137‑06‑21 15:00 |\n| Insulin Human Regular (regular insulin) | IV DRIP | 2140‑10‑03 12:00 | 2140‑10‑04 14:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑04 14:00 | 2140‑10‑06 16:00 |\n| Insulin Pump (self‑administered) | SC | 2140‑10‑06 17:00 | 2140‑10‑08 19:00 |\n\n**Notes**\n\n* All entries returned by the “glycemic” prescription filter are insulin‑based; no oral agents (metformin, sulfonylureas, DPP‑4 inhibitors, GLP‑1 RAs, SGLT2 inhibitors, TZDs) were found for this patient.  \n* Times are shown exactly as recorded in the EHR (year 2137 and 2140 reflect the synthetic dataset’s timeline).  \n* Doses are omitted from the summary per the request, but the records include dose values (e.g., 100 UNIT IV drip, 20 UNIT SC, etc.) if needed.",
+          "correct": false,
+          "score": 0.6,
+          "judge_rationale": "The answer omitted several duplicate insulin entries present in the ground truth and therefore did not include all expected medication records.",
+          "tools_called": [
+            "medications"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 44477
+        }
+      ]
+    },
+    {
+      "task_id": 8,
+      "type": "multi",
+      "question": "Retrieve the latest values for a diabetes lab panel: serum glucose (itemid=50931), HbA1c (itemid=50852), creatinine (itemid=50912), and potassium (itemid=50971).",
+      "subject_id": 10014354,
+      "expected_answer": {
+        "hba1c": {
+          "valuenum": 9.5,
+          "valueuom": "%",
+          "charttime": "2151-01-15T13:10:00"
+        },
+        "glucose": {
+          "valuenum": 279,
+          "valueuom": "mg/dL",
+          "charttime": "2150-10-08T12:10:00"
+        },
+        "potassium": {
+          "valuenum": 4,
+          "valueuom": "mEq/L",
+          "charttime": "2150-10-08T12:10:00"
+        },
+        "creatinine": {
+          "valuenum": 1.1,
+          "valueuom": "mg/dL",
+          "charttime": "2150-10-08T12:10:00"
+        }
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 23702,
+      "avg_tool_calls": 4,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Latest diabetes‑panel lab results for subject 10014354**\n\n| Lab | Item ID | Date & Time | Value | Units |\n|-----|---------|-------------|-------|-------|\n| Serum Glucose | 50931 | 2150‑10‑08 12:10 | 279 | mg/dL |\n| Hemoglobin A1c | 50852 | 2151‑01‑15 13:10 | 9.5 | % |\n| Creatinine | 50912 | 2150‑10‑08 12:10 | 1.1 | mg/dL |\n| Potassium | 50971 | 2150‑10‑08 12:10 | 4 | mEq/L |\n\nThese are the most recent values recorded for each specified lab test.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM provided exact matching values, units, and timestamps for all four lab items as in the ground truth.",
+          "tools_called": [
+            "latest_lab",
+            "latest_lab",
+            "latest_lab",
+            "latest_lab"
+          ],
+          "tool_call_count": 4,
+          "duration_ms": 23702
+        }
+      ]
+    },
+    {
+      "task_id": 9,
+      "type": "multi",
+      "question": "What are the highest and lowest serum glucose (itemid=50931) values ever recorded for this patient, and when did they occur?",
+      "subject_id": 10037928,
+      "expected_answer": {
+        "max_glucose": {
+          "valuenum": 996,
+          "charttime": "2177-07-14T15:15:00"
+        },
+        "min_glucose": {
+          "valuenum": 43,
+          "charttime": "2177-07-17T07:40:00"
+        }
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 11208,
+      "avg_tool_calls": 1,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Highest serum glucose (itemid = 50931)**  \n- **Value:** 996 mg/dL  \n- **Date/Time:** 2177‑07‑14 15:15  \n\n**Lowest serum glucose (itemid = 50931)**  \n- **Value:** 43 mg/dL  \n- **Date/Time:** 2177‑07‑17 07:40  \n\nThese are the extreme glucose readings recorded for subject 10037928.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer provides the exact max and min glucose values and timestamps as in the ground truth.",
+          "tools_called": [
+            "lab_history"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 11208
+        }
+      ]
+    },
+    {
+      "task_id": 12,
+      "type": "multi",
+      "question": "Compare this patient's first and most recent serum creatinine (itemid=50912) values in chronological order. Is the value higher at the end?",
+      "subject_id": 10019003,
+      "expected_answer": {
+        "last_time": "2155-11-23T09:06:00",
+        "first_time": "2148-11-24T08:55:00",
+        "increasing": true,
+        "last_value": 1.5,
+        "first_value": 1.1
+      },
+      "n_trials": 1,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 16426,
+      "avg_tool_calls": 1,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "- **First serum creatinine** (itemid = 50912)  \n  - Date / time: **2148‑11‑24 08:55**  \n  - Value: **1.1 mg/dL**\n\n- **Most recent serum creatinine** (itemid = 50912)  \n  - Date / time: **2153‑03‑27 22:50**  \n  - Value: **3.2 mg/dL**\n\n**Comparison:** The most recent creatinine (3.2 mg/dL) is higher than the first measurement (1.1 mg/dL).",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "The answer gave an incorrect most recent date and value (2153-03-27, 3.2) instead of the ground truth date 2155-11-23 and value 1.5, so the factual comparison is wrong.",
+          "tools_called": [
+            "lab_history"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 16426
+        }
+      ]
+    },
+    {
+      "task_id": 14,
+      "type": "multi",
+      "question": "How many total hospital admissions does this patient have, and how many of those admissions include at least one diabetes-related diagnosis (ICD-9 250* or ICD-10 E08–E13)?",
+      "subject_id": 10023239,
+      "expected_answer": {
+        "total_admissions": 3,
+        "admissions_with_diabetes_dx": 2
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 14807,
+      "avg_tool_calls": 2,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient has **3 total hospital admissions**.  \n**2 of those admissions** (the stays on 2140‑10‑03 to 2140‑10‑08 and on 2140‑10‑22 to 2140‑10‑23) contain at least one diabetes‑related diagnosis (ICD‑10 codes E10.1 and E11.65, which fall within the E08–E13 range).  \n\n**Answer:** 3 admissions total; 2 admissions include a diabetes‑related diagnosis.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The LLM correctly reports 3 total admissions and 2 admissions with diabetes diagnoses, matching the ground truth.",
+          "tools_called": [
+            "patient_info",
+            "diagnoses"
+          ],
+          "tool_call_count": 2,
+          "duration_ms": 14807
+        }
+      ]
+    },
+    {
+      "task_id": 16,
+      "type": "reasoning",
+      "question": "What proportion of this patient's serum glucose readings (itemid=50931) exceed 200 mg/dL? Report the count above 200, the total count, and the percentage.",
+      "subject_id": 10014354,
+      "expected_answer": {
+        "percentage": 43.2,
+        "total_readings": 185,
+        "above_200_count": 80
+      },
+      "n_trials": 1,
+      "pass_rate": 0,
+      "score_mean": 0,
+      "score_std": 0,
+      "score_ci_low": 0,
+      "score_ci_high": 0,
+      "avg_duration_ms": 10299,
+      "avg_tool_calls": 1,
+      "score": 0,
+      "correct": false,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "I’m unable to compute the exact proportion from the list of values provided.",
+          "correct": false,
+          "score": 0,
+          "judge_rationale": "The response provides no numeric answer, missing all required facts (count, total, percentage).",
+          "tools_called": [
+            "lab_history"
+          ],
+          "tool_call_count": 1,
+          "duration_ms": 10299
+        }
+      ]
+    },
+    {
+      "task_id": 18,
+      "type": "reasoning",
+      "question": "Is this patient currently prescribed metformin? Given their gender and latest serum creatinine (itemid=50912), is metformin within safe prescribing limits? (Metformin is generally contraindicated when creatinine exceeds 1.5 mg/dL in males or 1.4 mg/dL in females.)",
+      "subject_id": 10019003,
+      "expected_answer": {
+        "gender": "F",
+        "metformin_safe": false,
+        "latest_creatinine": 1.5,
+        "metformin_prescribed": false
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 1,
+      "score_std": 0,
+      "score_ci_low": 1,
+      "score_ci_high": 1,
+      "avg_duration_ms": 19260,
+      "avg_tool_calls": 3,
+      "score": 1,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Metformin prescription**  \n- The glycemic‑medication list for this patient contains only insulin (various administrations) and no record of metformin. **The patient is not currently prescribed metformin.**\n\n**Renal safety assessment**  \n- Latest serum creatinine (item ID 50912) = **1.5 mg/dL** (measured 2155‑11‑23).  \n- Patient gender = **female**.  \n\nGuideline: metformin is contraindicated when creatinine > 1.4 mg/dL in females (or >1.5 mg/dL in males).  \n\n- The patient’s creatinine of 1.5 mg/dL **exceeds the safe limit for a female**.  \n\n**Conclusion** – Metformin would be unsafe for this patient because her current creatinine level is above the recommended threshold, and she is not presently prescribed the drug.",
+          "correct": true,
+          "score": 1,
+          "judge_rationale": "The answer correctly states the patient is not prescribed metformin, provides the correct creatinine value, identifies gender as female, and correctly concludes metformin is unsafe, matching all ground truth facts.",
+          "tools_called": [
+            "medications",
+            "patient_info",
+            "latest_lab"
+          ],
+          "tool_call_count": 3,
+          "duration_ms": 19260
+        }
+      ]
+    },
+    {
+      "task_id": 20,
+      "type": "reasoning",
+      "question": "Retrieve this patient's latest serum glucose (itemid=50931), HbA1c (itemid=50852), and creatinine (itemid=50912). Also list their glycemic-control medications. Then write a brief clinical note summarizing their current metabolic status and save it using the note tool.",
+      "subject_id": 10015860,
+      "expected_answer": {
+        "latest_hba1c": {
+          "valuenum": 6.6,
+          "charttime": "2192-07-31T12:45:00"
+        },
+        "latest_glucose": {
+          "valuenum": 111,
+          "charttime": "2194-11-19T07:15:00"
+        },
+        "latest_creatinine": {
+          "valuenum": 6.7,
+          "charttime": "2194-11-19T07:15:00"
+        },
+        "glycemic_medications": [
+          "GlyBURIDE",
+          "Insulin",
+          "Insulin Human Regular",
+          "Insulin (Regular) for Hyperkalemia"
+        ]
+      },
+      "n_trials": 1,
+      "pass_rate": 1,
+      "score_mean": 0.88,
+      "score_std": 0,
+      "score_ci_low": 0.88,
+      "score_ci_high": 0.88,
+      "avg_duration_ms": 35970,
+      "avg_tool_calls": 5,
+      "score": 0.88,
+      "correct": true,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "**Latest Laboratory Values (subject ID 10015860)**  \n| Test | Value | Units | Date/Time |\n|------|-------|-------|-----------|\n| Serum Glucose (itemid 50931) | **111** | mg/dL | 2194‑11‑19 07:15 |\n| Hemoglobin A1c (itemid 50852) | **6.6** | % | 2192‑07‑31 12:45 |\n| Creatinine (itemid 50912) | **6.7** | mg/dL | 2194‑11‑19 07:15 |\n\n**Glycemic‑control Medications** (most recent entries)  \n- Multiple insulin regimens (SC), doses ranging from 0 to 55 units, including basal and bolus administrations.  \n- Glyburide 5 mg PO (occasionally prescribed).  \n\n**Clinical Note (saved to chart)**  \nMetabolic summary: Latest serum glucose 111 mg/dL (2194‑11‑19), HbA1c 6.6 % (2192‑07‑31), creatinine 6.7 mg/dL (2194‑11‑19) indicating markedly elevated renal dysfunction. Patient is on multiple insulin regimens (SC bolus and basal doses ranging 0‑55 units) and occasional Glyburide 5 mg PO. Glycemic control appears modest with HbA1c near target but high creatinine suggests chronic kidney disease; insulin dosing may need adjustment for renal clearance.",
+          "correct": true,
+          "score": 0.88,
+          "judge_rationale": "All three laboratory values and timestamps match the ground truth; medication list includes two of the four expected items, giving partial credit for the meds.",
+          "tools_called": [
+            "latest_lab",
+            "latest_lab",
+            "latest_lab",
+            "medications",
+            "add_patient_note"
+          ],
+          "tool_call_count": 5,
+          "duration_ms": 35970
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_tasks": 10,
+    "total_trials": 10,
+    "meanPassRate": 0.7,
+    "meanScore": 0.748,
+    "avgToolCalls": 2,
+    "byType": {
+      "simple": {
+        "total_tasks": 3,
+        "meanPassRate": 0.6666666666666666,
+        "meanScore": 0.8666666666666667
+      },
+      "multi": {
+        "total_tasks": 4,
+        "meanPassRate": 0.75,
+        "meanScore": 0.75
+      },
+      "reasoning": {
+        "total_tasks": 3,
+        "meanPassRate": 0.6666666666666666,
+        "meanScore": 0.6266666666666666
+      }
+    }
+  }
+}

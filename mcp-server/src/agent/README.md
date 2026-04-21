@@ -1,8 +1,8 @@
 # EHR-MCP Agent — Evaluation Client
 
 This folder contains the **AI agent evaluation client** that connects an LLM
-(via OpenRouter) to the MCP server and runs it against the 20 clinical tasks
-to produce an accuracy report.
+(via OpenRouter) to the MCP server and runs it against the 10 clinical tasks,
+optionally with repeated trials per task for stability measurement.
 
 ---
 
@@ -34,8 +34,9 @@ to produce an accuracy report.
 │                                               │                 │
 │                        ┌──────────────────────▼──────────────┐  │
 │                        │           index.ts                   │  │
-│                        │  Runs all 20 tasks (or --task N)     │  │
-│                        │  Prints per-task + summary results   │  │
+│                        │  Runs 10 tasks × N trials            │  │
+│                        │  (--task, --repeats flags)           │  │
+│                        │  Prints pass-rate, mean±std, CI95    │  │
 │                        │  Saves JSON report to output/        │  │
 │                        └─────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
@@ -76,13 +77,19 @@ Each "step" is one think→tool→observe cycle. Complex tasks may need 2–3 st
 OPENROUTER_API_KEY=sk-or-...   # Get from https://openrouter.ai (free tier available)
 ```
 
-Optionally set the agent model and the judge model:
+Optionally set the agent model, judge model, and a separate judge API key:
 
 ```env
 OPENROUTER_MODEL=openai/gpt-oss-120b:free
+
 # If unset, the same model is used as judge. For publication-grade results,
 # set a stronger / different-family judge to mitigate self-preference bias.
 OPENROUTER_JUDGE_MODEL=openai/gpt-4o-mini
+
+# Optional: use a second OpenRouter account/key for the judge. Useful to
+# double effective rate-limit headroom when agent and judge share a model
+# (e.g. both on the free tier). Falls back to OPENROUTER_API_KEY if unset.
+OPENROUTER_API_KEY_JUDGE=sk-or-...
 ```
 
 ### 2. Install dependencies
@@ -108,9 +115,36 @@ npm run generate:ground-truth
 ### 4. Run the evaluation
 
 ```bash
-npm run eval              # all 20 tasks
-npm run eval -- --task 4  # single task (good for testing)
+npm run eval                              # all 10 tasks, 1 trial each
+npm run eval -- --task 4                  # single task (quick test)
+npm run eval -- --tasks 1,4,18            # specific subset
+npm run eval -- --repeats 5               # all 10 tasks, 5 trials each (stability)
+npm run eval -- --tasks 1,4 --repeats 5   # subset + repeats
+npm run eval -- --repeats 5 --delay 4000  # 4s spacing between LLM calls (avoids 429s)
 ```
+
+`--task` and `--tasks` are aliases — both accept a single id or a CSV list
+(`--task 1,4,18` also works). Unknown ids are warned and skipped.
+
+### Rate-limit throttling
+
+Each trial fires up to ~10 LLM calls (1 initial agent call + its multi-step
+tool loop + 1 judge call). On OpenRouter's free tier (~20 req/min) a run
+like `--repeats 5` can burst enough to trigger 429 errors.
+
+`--delay <ms>` (or env `OPENROUTER_REQUEST_DELAY_MS`) enforces a minimum
+spacing between consecutive LLM calls **per API key**. Calls on different
+keys are tracked independently, so setting both `OPENROUTER_API_KEY` and
+`OPENROUTER_API_KEY_JUDGE` doubles your effective budget — the throttler
+treats each as its own bucket.
+
+Default is `0` (no throttling). For a free-tier run, `--delay 3000` to
+`--delay 4000` is typically safe.
+
+Each task is executed `--repeats` times. We report:
+- **pass_rate** — fraction of trials with `correct=true` (judge score ≥ 0.8)
+- **score_mean ± score_std** — continuous judge score across trials
+- **CI95** — bootstrap 95% confidence interval of the mean (1000 resamples, seeded)
 
 ---
 
@@ -142,35 +176,55 @@ Results are saved to `src/agent/output/eval_report_<timestamp>.json`:
 {
   "model": "openai/gpt-oss-120b:free",
   "judge_model": "openai/gpt-4o-mini",
-  "ran_at": "2026-04-20T...",
+  "ran_at": "2026-04-21T...",
   "mcp_server_url": "http://localhost:3333/mcp",
+  "repeats": 5,
   "summary": {
-    "total": 20,
-    "correct": 15,
-    "accuracy": 0.75,
-    "meanScore": 0.82,
-    "avgToolCalls": 1.8,
+    "total_tasks": 10,
+    "total_trials": 50,
+    "meanPassRate": 0.72,
+    "meanScore": 0.81,
+    "avgToolCalls": 2.3,
     "byType": {
-      "simple":    { "total": 7, "correct": 7, "accuracy": 1.00, "meanScore": 0.95 },
-      "multi":     { "total": 7, "correct": 5, "accuracy": 0.71, "meanScore": 0.78 },
-      "reasoning": { "total": 6, "correct": 3, "accuracy": 0.50, "meanScore": 0.68 }
+      "simple":    { "total_tasks": 3, "meanPassRate": 1.00, "meanScore": 0.97 },
+      "multi":     { "total_tasks": 4, "meanPassRate": 0.70, "meanScore": 0.78 },
+      "reasoning": { "total_tasks": 3, "meanPassRate": 0.47, "meanScore": 0.68 }
     }
   },
   "tasks": [
     {
       "task_id": 1,
-      "score": 1.0,
-      "correct": true,
-      "judge_rationale": "Answer correctly identifies gender=M and anchor_age=70.",
-      "tools_called": ["patient_info"],
-      ...
+      "type": "simple",
+      "n_trials": 5,
+      "pass_rate": 1.0,
+      "score_mean": 0.98,
+      "score_std": 0.045,
+      "score_ci_low": 0.92,
+      "score_ci_high": 1.00,
+      "avg_duration_ms": 5100,
+      "avg_tool_calls": 1.0,
+      "trials": [
+        {
+          "trial": 1,
+          "llm_answer": "The patient is male and his anchor age is 70 years.",
+          "correct": true,
+          "score": 1.0,
+          "judge_rationale": "Correctly identifies gender=M and anchor_age=70.",
+          "tools_called": ["patient_info"],
+          "tool_call_count": 1,
+          "duration_ms": 5012
+        }
+      ]
     }
   ]
 }
 ```
 
-The console prints a live table plus a "Failed tasks (judge rationale)"
-section listing why each failure was marked wrong.
+The console prints:
+- a per-task summary line (`pass_rate=N/M, score=mean±std CI95=[lo,hi]`)
+- a results-by-type table
+- a "Failed trials (judge rationale)" section listing every trial that did
+  not pass, with the judge's 1–2 sentence reasoning — useful for debugging.
 
 ---
 
@@ -178,7 +232,8 @@ section listing why each failure was marked wrong.
 
 | File | Purpose |
 |---|---|
-| `index.ts` | Entry point — parses CLI args, runs evaluation, prints results |
-| `runner.ts` | Core agent logic — MCP tool discovery, ReAct loop, task execution |
+| `index.ts` | Entry point — parses CLI args (`--task`, `--repeats`), runs evaluation, prints results |
+| `runner.ts` | Core agent logic — MCP tool discovery, ReAct loop, trials × tasks orchestration |
 | `judge.ts` | LLM-as-judge scorer — grades free-text answers vs SQL ground truth |
+| `stats.ts` | Summary statistics: mean, sample std, seeded bootstrap 95% CI |
 | `output/` | Saved evaluation reports (timestamped JSON files) |

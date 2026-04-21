@@ -19,6 +19,7 @@ import { generateText } from "ai";
 import type { LanguageModel } from "ai";
 
 import { logger } from "../utils/logger.js";
+import { throttleLlmCall } from "./throttle.js";
 
 export interface JudgeVerdict {
   score: number;      // 0.0 – 1.0, partial credit for lists
@@ -33,6 +34,10 @@ export interface JudgeInput {
   model: LanguageModel;
   /** Pass threshold for `correct` flag (default 0.8). */
   threshold?: number;
+  /** API key used by the judge model — for rate-limit throttling (no-op if delayMs=0). */
+  apiKey?: string;
+  /** Minimum ms between consecutive judge calls on this key. Default 0 = no throttling. */
+  delayMs?: number;
 }
 
 const SYSTEM_PROMPT = `You are an expert clinical data evaluator grading an LLM's answer against a known ground truth.
@@ -126,6 +131,9 @@ export async function judgeAnswer(input: JudgeInput): Promise<JudgeVerdict> {
   );
 
   const attempt = async (extraInstruction?: string): Promise<string> => {
+    if (input.apiKey && input.delayMs) {
+      await throttleLlmCall(input.apiKey, input.delayMs);
+    }
     const result = await generateText({
       model: input.model,
       system: SYSTEM_PROMPT + (extraInstruction ? `\n\n${extraInstruction}` : ""),

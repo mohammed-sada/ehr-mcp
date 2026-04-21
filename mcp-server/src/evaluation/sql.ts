@@ -75,56 +75,6 @@ export function taskToSql(task: EvalTask): TaskSql {
         values: [sid]
       };
 
-    // 2: List all admissions
-    case 2:
-      return {
-        text: `
-          SELECT COALESCE(
-            (
-              SELECT jsonb_agg(jsonb_build_object(
-                'hadm_id', hadm_id,
-                'admittime', admittime,
-                'dischtime', dischtime
-              ) ORDER BY admittime NULLS LAST)
-              FROM hosp.admissions
-              WHERE subject_id = $1
-            ),
-            '[]'::jsonb
-          ) AS expected_answer
-        `,
-        values: [sid]
-      };
-
-    // 3: Latest glucose
-    case 3: {
-      const itemid = getNumParam(task, "itemid");
-      return {
-        text: `
-          SELECT jsonb_build_object(
-            'latest_lab', (
-              SELECT jsonb_build_object(
-                'subject_id', le.subject_id,
-                'hadm_id', le.hadm_id,
-                'itemid', le.itemid,
-                'label', dli.label,
-                'charttime', le.charttime,
-                'valuenum', le.valuenum,
-                'valueuom', le.valueuom
-              )
-              FROM hosp.labevents le
-              LEFT JOIN hosp.d_labitems dli ON dli.itemid = le.itemid
-              WHERE le.subject_id = $1
-                AND le.itemid = $2
-                AND le.valuenum IS NOT NULL
-              ORDER BY le.charttime DESC NULLS LAST
-              LIMIT 1
-            )
-          ) AS expected_answer
-        `,
-        values: [sid, itemid ?? -1]
-      };
-    }
-
     // 4: Latest HbA1c
     case 4: {
       const itemid = getNumParam(task, "itemid");
@@ -154,61 +104,6 @@ export function taskToSql(task: EvalTask): TaskSql {
         values: [sid, itemid ?? -1]
       };
     }
-
-    // 5: Latest creatinine
-    case 5: {
-      const itemid = getNumParam(task, "itemid");
-      return {
-        text: `
-          SELECT jsonb_build_object(
-            'latest_lab', (
-              SELECT jsonb_build_object(
-                'subject_id', le.subject_id,
-                'hadm_id', le.hadm_id,
-                'itemid', le.itemid,
-                'label', dli.label,
-                'charttime', le.charttime,
-                'valuenum', le.valuenum,
-                'valueuom', le.valueuom
-              )
-              FROM hosp.labevents le
-              LEFT JOIN hosp.d_labitems dli ON dli.itemid = le.itemid
-              WHERE le.subject_id = $1
-                AND le.itemid = $2
-                AND le.valuenum IS NOT NULL
-              ORDER BY le.charttime DESC NULLS LAST
-              LIMIT 1
-            )
-          ) AS expected_answer
-        `,
-        values: [sid, itemid ?? -1]
-      };
-    }
-
-    // 6: Diabetes-related ICD diagnoses
-    case 6:
-      return {
-        text: `
-          SELECT COALESCE(
-            (
-              SELECT jsonb_agg(jsonb_build_object(
-                'hadm_id', di.hadm_id,
-                'icd_code', di.icd_code,
-                'icd_version', di.icd_version,
-                'long_title', did.long_title
-              ) ORDER BY di.hadm_id NULLS LAST, di.seq_num NULLS LAST)
-              FROM hosp.diagnoses_icd di
-              LEFT JOIN hosp.d_icd_diagnoses did
-                ON did.icd_code = di.icd_code
-               AND did.icd_version = di.icd_version
-              WHERE di.subject_id = $1
-                AND ${DIABETES_ICD_FILTER}
-            ),
-            '[]'::jsonb
-          ) AS expected_answer
-        `,
-        values: [sid]
-      };
 
     // 7: Glycemic-control medications
     case 7: {
@@ -302,58 +197,6 @@ export function taskToSql(task: EvalTask): TaskSql {
       };
     }
 
-    // 10: Diabetes comorbidity check (CKD, hypertension, cardiovascular disease)
-    case 10:
-      return {
-        text: `
-          WITH patient_dx AS (
-            SELECT DISTINCT did.long_title
-            FROM hosp.diagnoses_icd di
-            JOIN hosp.d_icd_diagnoses did
-              ON did.icd_code = di.icd_code AND did.icd_version = di.icd_version
-            WHERE di.subject_id = $1
-          )
-          SELECT jsonb_build_object(
-            'has_ckd', EXISTS (
-              SELECT 1 FROM patient_dx
-              WHERE long_title ILIKE '%chronic kidney%' OR long_title ILIKE '%renal disease%'
-            ),
-            'has_hypertension', EXISTS (
-              SELECT 1 FROM patient_dx
-              WHERE long_title ILIKE '%hypertension%' OR long_title ILIKE '%hypertensive%'
-            ),
-            'has_cardiovascular', EXISTS (
-              SELECT 1 FROM patient_dx
-              WHERE long_title ILIKE '%coronary%' OR long_title ILIKE '%heart disease%'
-                 OR long_title ILIKE '%heart failure%' OR long_title ILIKE '%myocardial%'
-                 OR long_title ILIKE '%atherosclerotic heart%' OR long_title ILIKE '%cardiac%'
-            )
-          ) AS expected_answer
-        `,
-        values: [sid]
-      };
-
-    // 11: Distinct insulin formulations and routes
-    case 11:
-      return {
-        text: `
-          SELECT COALESCE(
-            (
-              SELECT jsonb_agg(jsonb_build_object('drug', drug, 'route', route) ORDER BY drug, route)
-              FROM (
-                SELECT DISTINCT drug, route
-                FROM hosp.prescriptions
-                WHERE subject_id = $1
-                  AND drug ILIKE '%insulin%'
-                ORDER BY drug, route
-              ) t
-            ),
-            '[]'::jsonb
-          ) AS expected_answer
-        `,
-        values: [sid]
-      };
-
     // 12: First vs last creatinine
     case 12: {
       const itemid = getNumParam(task, "itemid");
@@ -389,31 +232,6 @@ export function taskToSql(task: EvalTask): TaskSql {
       };
     }
 
-    // 13: Length of stay (hours) for most recent admission
-    case 13:
-      return {
-        text: `
-          WITH last_adm AS (
-            SELECT hadm_id, admittime, dischtime
-            FROM hosp.admissions
-            WHERE subject_id = $1
-            ORDER BY admittime DESC NULLS LAST
-            LIMIT 1
-          )
-          SELECT jsonb_build_object(
-            'hadm_id', hadm_id,
-            'admittime', admittime,
-            'dischtime', dischtime,
-            'los_hours', CASE
-              WHEN admittime IS NULL OR dischtime IS NULL THEN NULL
-              ELSE EXTRACT(EPOCH FROM (dischtime - admittime)) / 3600.0
-            END
-          ) AS expected_answer
-          FROM last_adm
-        `,
-        values: [sid]
-      };
-
     // 14: Total admissions vs admissions with a diabetes diagnosis
     case 14:
       return {
@@ -435,26 +253,6 @@ export function taskToSql(task: EvalTask): TaskSql {
 
     // ── REASONING ─────────────────────────────────────────
 
-    // 15: Hypoglycemia count (glucose < 70)
-    case 15: {
-      const itemid = getNumParam(task, "itemid");
-      return {
-        text: `
-          SELECT jsonb_build_object(
-            'total_readings', (
-              SELECT COUNT(*)::int FROM hosp.labevents
-              WHERE subject_id = $1 AND itemid = $2 AND valuenum IS NOT NULL
-            ),
-            'hypoglycemic_count', (
-              SELECT COUNT(*)::int FROM hosp.labevents
-              WHERE subject_id = $1 AND itemid = $2 AND valuenum IS NOT NULL AND valuenum < 70
-            )
-          ) AS expected_answer
-        `,
-        values: [sid, itemid ?? -1]
-      };
-    }
-
     // 16: Hyperglycemia proportion (glucose > 200)
     case 16: {
       const itemid = getNumParam(task, "itemid");
@@ -475,22 +273,6 @@ export function taskToSql(task: EvalTask): TaskSql {
             END
           ) AS expected_answer
           FROM stats
-        `,
-        values: [sid, itemid ?? -1]
-      };
-    }
-
-    // 17: Glucose summary statistics
-    case 17: {
-      const itemid = getNumParam(task, "itemid");
-      return {
-        text: `
-          SELECT jsonb_build_object(
-            'n', COALESCE((SELECT COUNT(*) FROM hosp.labevents WHERE subject_id=$1 AND itemid=$2 AND valuenum IS NOT NULL), 0),
-            'avg', (SELECT AVG(valuenum) FROM hosp.labevents WHERE subject_id=$1 AND itemid=$2 AND valuenum IS NOT NULL),
-            'min', (SELECT MIN(valuenum) FROM hosp.labevents WHERE subject_id=$1 AND itemid=$2 AND valuenum IS NOT NULL),
-            'max', (SELECT MAX(valuenum) FROM hosp.labevents WHERE subject_id=$1 AND itemid=$2 AND valuenum IS NOT NULL)
-          ) AS expected_answer
         `,
         values: [sid, itemid ?? -1]
       };
@@ -534,26 +316,6 @@ export function taskToSql(task: EvalTask): TaskSql {
         values: [sid, itemid ?? -1]
       };
     }
-
-    // 19: Distinct diabetes ICD codes across all admissions
-    case 19:
-      return {
-        text: `
-          SELECT jsonb_build_object(
-            'unique_diabetes_codes',
-            COALESCE(
-              (
-                SELECT COUNT(DISTINCT (di.icd_code, di.icd_version))
-                FROM hosp.diagnoses_icd di
-                WHERE di.subject_id = $1
-                  AND ${DIABETES_ICD_FILTER}
-              ),
-              0
-            )
-          ) AS expected_answer
-        `,
-        values: [sid]
-      };
 
     // 20: Metabolic status summary (labs + meds; note is free-text, ground truth = structured data)
     case 20:
